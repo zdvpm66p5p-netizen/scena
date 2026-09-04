@@ -315,6 +315,41 @@ body:before{
 .lang-switch{position:fixed;top:12px;right:14px;z-index:80;display:flex;align-items:center;gap:2px;padding:3px;background:rgba(15,15,21,.94);border:1px solid #292930;border-radius:12px;backdrop-filter:blur(12px);box-shadow:0 8px 24px rgba(0,0,0,.25)}
 .lang-btn{border:0;background:transparent;color:#777782;border-radius:9px;padding:6px 9px;font-size:11px;font-weight:900;letter-spacing:.6px}.lang-btn.active{background:#1a1429;color:#fff}.screen .top{padding-right:82px}
 </style>
+<style>
+/* v14: compact role card, mask outside the frame, no scrolling */
+.pass-stage-compact{position:relative;flex:1;display:flex;min-height:0;perspective:1200px;align-items:center;justify-content:center;padding-top:34px;overflow:visible;}
+.pass-mask{position:absolute;z-index:5;top:0;left:50%;transform:translate(-50%,-42%);width:54px;height:54px;border-radius:50%;background:#1d152d;border:1px solid #624394;display:grid;place-items:center;font-size:25px;box-shadow:0 0 28px rgba(124,60,255,.16);}
+#passFlip{width:100%;max-width:620px;height:clamp(365px,calc(100vh - 185px),475px);min-height:0;margin:0 auto;position:relative;transform-style:preserve-3d;transition:transform .65s cubic-bezier(.2,.75,.2,1);}
+#passCover,#passRole{padding:18px 24px;border-radius:22px;}
+#passCover h2,#passRole h2{font-size:25px;margin:0 0 5px;}
+#passCover .pass-secret-title{margin-bottom:12px;font-size:10px;letter-spacing:2.5px;}
+#passCover .pass-secret-text{font-size:13px;line-height:1.35;margin:0 0 12px;max-width:330px;}
+#passCover .pass-show{font-size:15px;padding:8px 14px;}
+.pass-role-card{height:100%;max-height:none;overflow:hidden;padding:18px 22px 14px;border-radius:22px;}
+.pass-role-inner{margin-top:7px;}
+.pass-role-inner .role-icon{font-size:34px;margin:0 auto 4px;}
+.pass-role-inner .role-name{font-size:24px;margin-bottom:9px;}
+.pass-role-card #roleDetails{width:100%;}
+.pass-role-card .secret-row{padding:8px 0;}
+.pass-role-card .label{font-size:9px;letter-spacing:.7px;margin-bottom:3px;}
+.pass-role-card .secret-value{font-size:13px;line-height:1.25;}
+.pass-role-card #passWarning{font-size:10px;line-height:1.25;margin:9px 0 0;max-width:500px;color:#858590;}
+#passHide{width:min(100%,620px);margin-top:8px;min-height:44px;font-size:14px;}
+@media(max-width:520px){
+  .pass-stage-compact{padding-top:30px;}
+  .pass-mask{width:50px;height:50px;font-size:23px;}
+  #passFlip{height:clamp(350px,calc(100vh - 170px),445px);}
+  #passCover,#passRole{padding:15px 16px;}
+  #passCover h2,#passRole h2{font-size:23px;}
+  .pass-role-card{padding:15px 16px 12px;}
+  .pass-role-inner .role-icon{font-size:30px;}
+  .pass-role-inner .role-name{font-size:22px;margin-bottom:6px;}
+  .pass-role-card .secret-row{padding:6px 0;}
+  .pass-role-card .secret-value{font-size:12px;line-height:1.22;}
+  .pass-role-card #passWarning{font-size:9px;margin-top:6px;}
+  #passHide{margin-top:6px;min-height:42px;}
+}
+</style>
 </head>
 <body>
 <div class="lang-switch" aria-label="Language"><button class="lang-btn active" id="langRu" onclick="setLanguage('ru')">RU</button><button class="lang-btn" id="langEn" onclick="setLanguage('en')">EN</button></div>
@@ -372,10 +407,10 @@ body:before{
 <div class="top"><div class="brand">СЦЕНА</div><div id="passProgress" class="muted"></div></div>
 
 <!-- Чёрный экран: роль скрыта -->
-<div id="passStage" style="position:relative;flex:1;display:flex;min-height:0;perspective:1200px">
+<div id="passStage" class="pass-stage-compact">
+<div class="pass-mask">🎭</div>
 <div id="passFlip">
 <div id="passCover">
-<div class="pass-icon">●</div>
 <h2 id="coverTitle">Игрок 1</h2>
 <div class="pass-secret-title" id="passSecret">СЕКРЕТНО</div>
 <p class="pass-secret-text" id="coverText">Телефон уже у тебя.<br><strong style="color:#f5f5f5">Убедись, что никто не смотрит.</strong></p>
@@ -384,7 +419,6 @@ body:before{
 
 <div id="passRole">
 <div class="pass-role-card">
-<div class="pass-icon">🎭</div>
 <h2 id="roleTitle">Игрок 1</h2>
 <p id="roleOnly">Теперь можно посмотреть только тебе.</p>
 <div class="pass-role-inner">
