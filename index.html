@@ -112,25 +112,27 @@ text-align:left;
 @media(max-width:520px){.app{padding:18px 13px 28px}.choice-grid{grid-template-columns:1fr}h1{font-size:30px}.timer{font-size:36px}}
 @media(prefers-reduced-motion:reduce){.screen{transition:none}}
 
-#passStage{
-width:100%;
-}
-#passCover,
-#passRole{
-box-sizing:border-box;
-}
-#passCover{
-justify-content:center;
-}
-#passRole{
-justify-content:center;
-}
-@media(max-width:520px){
-.pass{max-width:100%}
-.pass-icon{width:68px;height:68px;flex-basis:68px}
-#passCover > div[style]{height:170px !important;flex-basis:170px}
-.role-card{padding:19px}
-}
+#passStage{width:100%;}
+#passFlip{width:100%;max-width:620px;height:min(560px,62vh);min-height:430px;margin:auto;position:relative;transform-style:preserve-3d;transition:transform .65s cubic-bezier(.2,.75,.2,1);}
+#passFlip.flipped{transform:rotateY(180deg)}
+#passCover,#passRole{box-sizing:border-box;width:100%;height:100%;position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid #292930;border-radius:24px;background:linear-gradient(145deg,#111116,#0c0c11);padding:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+#passRole{transform:rotateY(180deg);}
+.pass-secret-title{font-size:12px;font-weight:900;letter-spacing:3px;color:#5d5d68;margin-bottom:22px}
+.pass-secret-text{font-size:15px;line-height:1.55;color:#9b9ba7;max-width:330px;margin:0 0 30px}
+.pass-show{appearance:none;border:0;background:none;color:#f7f7fa;font:inherit;font-size:17px;font-weight:900;cursor:pointer;padding:12px 18px;border-radius:12px;transition:background .2s,color .2s,transform .2s}
+.pass-show:hover{background:#17131f;color:#b99cff}
+.pass-show:active{transform:scale(.97)}
+@media(max-width:520px){#passFlip{max-width:100%;height:min(570px,68vh);min-height:430px}#passCover,#passRole{padding:24px 18px}.pass-secret-text{font-size:14px;margin-bottom:24px}}
+/* v13: revealed role uses one unified card; hide button stays outside */
+#passRole{border:0;background:transparent;padding:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;}
+.pass-role-card{box-sizing:border-box;width:100%;height:auto;max-height:calc(100% - 70px);overflow:auto;border:1px solid #7c3cff;border-radius:24px;background:linear-gradient(145deg,#171220,#0e0d13);padding:26px 30px 24px;display:flex;flex-direction:column;align-items:center;text-align:center;box-shadow:0 18px 50px rgba(0,0,0,.22);}
+.pass-role-inner{width:100%;margin-top:12px;padding:0;background:transparent;border:0;}
+.pass-role-inner .role-icon{margin:0 auto 10px;}
+.pass-role-inner .role-name{margin-bottom:18px;}
+.pass-role-card #roleDetails{width:100%;text-align:left;}
+.pass-role-card #passWarning{margin:18px 0 0;max-width:560px;}
+#passHide{flex:0 0 auto;width:min(100%,620px);}
+@media(max-width:520px){.pass-role-card{padding:22px 18px 20px;max-height:calc(100% - 66px)}#passRole{gap:10px}.pass-role-inner .role-name{margin-bottom:14px}}
 
 
 /* ===== SCENA V6 VISUAL LAYER ===== */
@@ -306,6 +308,9 @@ body:before{
 .monet-card{background:linear-gradient(145deg,#15111f,#0f0f14);border:1px solid #3d2b59;border-radius:18px;padding:20px;margin-top:16px}.credits{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid #292930}.credits-num{font-size:25px;font-weight:950}.mini{font-size:12px;color:#9696a3;line-height:1.45}.reward-btn{margin-top:14px}
 #rewardModal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:20px;z-index:60}#rewardModal.show{display:flex}.reward-box{width:min(430px,100%);background:#111115;border:1px solid #3d2b59;border-radius:22px;padding:24px;text-align:center;box-shadow:0 20px 70px rgba(0,0,0,.55)}.reward-ad{height:180px;border-radius:16px;background:#08080b;border:1px solid #272733;display:grid;place-items:center;color:#555560;font-weight:900;margin:18px 0}
 
+
+.hero-premium{padding-top:10px}.hero-kicker{display:inline-flex;border:1px solid #30263e;background:#100d15;color:#9d8ab8;border-radius:999px;padding:7px 10px;font-size:10px;font-weight:900;letter-spacing:1.4px;margin-bottom:22px}.logo{font-size:clamp(62px,16vw,104px);letter-spacing:-6px;text-shadow:0 0 50px rgba(124,60,255,.14)}.hero h1 span{color:#a98bdf}.hero-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:28px}.hero-meta div{background:rgba(16,16,22,.72);border:1px solid #25252d;border-radius:14px;padding:12px 10px;text-align:center}.hero-meta b{display:block;font-size:18px}.hero-meta span{display:block;color:#858590;font-size:10px;margin-top:3px;font-weight:800}.btn-main{min-height:60px;font-size:16px}.setup-summary{border:1px solid #30263e;background:#100d15;border-radius:14px;padding:13px 15px;color:#aaa0b9;font-size:12px;font-weight:800;text-align:center}.pass-flip{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .68s cubic-bezier(.2,.75,.2,1)}.pass-flip.flipped{transform:rotateY(180deg)}.pass-face{position:absolute!important;inset:0;width:100%;height:100%;max-width:100%;margin:auto;backface-visibility:hidden;-webkit-backface-visibility:hidden}.pass-front{transform:rotateY(0deg)}.pass-back{transform:rotateY(180deg);display:flex!important;justify-content:center}#passCover{justify-content:center}@media(max-width:520px){.hero-meta{margin-top:22px}.hero-meta div{padding:10px 6px}.hero-meta span{font-size:9px}.setup-summary{font-size:11px}}
+
 /* ===== LANGUAGE SWITCH ===== */
 .lang-switch{position:fixed;top:12px;right:14px;z-index:80;display:flex;align-items:center;gap:2px;padding:3px;background:rgba(15,15,21,.94);border:1px solid #292930;border-radius:12px;backdrop-filter:blur(12px);box-shadow:0 8px 24px rgba(0,0,0,.25)}
 .lang-btn{border:0;background:transparent;color:#777782;border-radius:9px;padding:6px 9px;font-size:11px;font-weight:900;letter-spacing:.6px}.lang-btn.active{background:#1a1429;color:#fff}.screen .top{padding-right:82px}
@@ -317,14 +322,16 @@ body:before{
 
 <section id="home" class="screen active">
 <div class="top"><div class="brand">СЦЕНА</div><div class="muted" id="homeMvp">MVP</div></div>
-<div class="hero">
+<div class="hero hero-premium">
+<div class="hero-kicker" id="homeMvp">ОДИН ТЕЛЕФОН · ИГРА ДЛЯ КОМПАНИИ</div>
 <div class="logo">СЦЕНА</div>
-<h1 id="homeTitle">Обычная ситуация.<br>Необычные люди.</h1>
-<p class="sub" id="homeSub">Один телефон на компанию. Каждый получает секретную роль, затем все вместе разыгрывают сцену и пытаются выполнить свою цель.</p>
+<h1 id="homeTitle">Обычная ситуация.<br><span>Необычные люди.</span></h1>
+<p class="sub" id="homeSub">Один телефон на компанию. Получите тайные роли, отыграйте общую сцену и попробуйте выполнить свою цель, не раскрыв её.</p>
 <div class="actions">
-<button class="btn" id="homeStart" onclick="goSetup()">Начать игру</button>
+<button class="btn btn-main" id="homeStart" onclick="goSetup()">Начать игру</button>
 <button class="btn secondary" id="homeRules" onclick="show('rules')">Как играть</button>
 </div>
+<div class="hero-meta"><div><b>3–8</b><span id="homeMetaPlayers">игроков</span></div><div><b>1</b><span id="homeMetaPhone">телефон</span></div><div><b>∞</b><span id="homeMetaRounds">раундов</span></div></div>
 </div>
 </section>
 
@@ -357,6 +364,7 @@ body:before{
 <div class="card"><h3 id="setupScene">Ситуация <span class="muted" style="font-size:12px;font-weight:700" id="setupVariants">9 вариантов</span></h3><div id="sceneChoices" class="choice-grid"></div></div>
 <div class="card"><h3 id="setupDifficulty">Сложность</h3><div id="difficultyChoices" class="choice-grid"></div></div>
 <div class="card"><h3 id="setupDuration">Длительность</h3><div id="durationChoices" class="choice-grid"></div></div>
+<div class="setup-summary" id="setupSummary">4 игрока · Магазин · Нормально · 3 минуты</div>
 <div class="footer"><button class="btn" id="setupDeal" onclick="startPass()">Раздать секретные роли</button></div>
 </section>
 
@@ -364,25 +372,28 @@ body:before{
 <div class="top"><div class="brand">СЦЕНА</div><div id="passProgress" class="muted"></div></div>
 
 <!-- Чёрный экран: роль скрыта -->
-<div id="passStage" style="position:relative;flex:1;display:flex;min-height:0">
-<div id="passCover" class="pass" style="width:100%">
+<div id="passStage" style="position:relative;flex:1;display:flex;min-height:0;perspective:1200px">
+<div id="passFlip">
+<div id="passCover">
 <div class="pass-icon">●</div>
 <h2 id="coverTitle">Игрок 1</h2>
-<p id="coverText">Телефон у тебя.<br><strong style="color:#f5f5f5">Убедись, что никто не смотрит.</strong></p>
-<div style="height:180px;background:#050507;border:1px solid #16161b;border-radius:20px;margin:22px 0;display:flex;align-items:center;justify-content:center;color:#33333b;font-weight:800;letter-spacing:1px" id="passSecret">СЕКРЕТНО</div>
-<button class="btn" id="passShow" onclick="revealRole()">Показать мою роль</button>
+<div class="pass-secret-title" id="passSecret">СЕКРЕТНО</div>
+<p class="pass-secret-text" id="coverText">Телефон уже у тебя.<br><strong style="color:#f5f5f5">Убедись, что никто не смотрит.</strong></p>
+<button class="pass-show" id="passShow" onclick="revealRole()">Показать мою роль</button>
 </div>
 
-<div id="passRole" class="pass" style="display:none;width:100%">
+<div id="passRole">
+<div class="pass-role-card">
 <div class="pass-icon">🎭</div>
 <h2 id="roleTitle">Игрок 1</h2>
 <p id="roleOnly">Теперь можно посмотреть только тебе.</p>
-<div class="role-card">
+<div class="pass-role-inner">
 <div id="roleIcon" class="role-icon">🎭</div>
 <div id="roleName" class="role-name">Роль</div>
 <div id="roleDetails"></div>
 </div>
 <p id="passWarning" class="warning">Запомни карточку. Нажми кнопку — экран снова станет чёрным, и можно будет передать телефон дальше.</p>
+</div>
 <button class="btn" id="passHide" onclick="hideRoleAndPass()">Запомнил → скрыть и передать</button>
 </div>
 </div>
@@ -606,7 +617,7 @@ let language=localStorage.getItem("scena_language")||"ru";
 
 const UI={
 ru:{
-"home.mvp":"MVP","home.title":"Обычная ситуация.<br>Необычные люди.","home.sub":"Один телефон на компанию. Каждый получает секретную роль, затем все вместе разыгрывают сцену и пытаются выполнить свою цель.","home.start":"Начать игру","home.rules":"Как играть",
+"home.mvp":"ОДИН ТЕЛЕФОН · ИГРА ДЛЯ КОМПАНИИ","home.metaPlayers":"игроков","home.metaPhone":"телефон","home.metaRounds":"раундов","home.title":"Обычная ситуация.<br><span>Необычные люди.</span>","home.sub":"Один телефон на компанию. Каждый получает секретную роль, затем все вместе разыгрывают сцену и пытаются выполнить свою цель.","home.start":"Начать игру","home.rules":"Как играть",
 "rules.back":"← Назад","rules.title":"ПРАВИЛА","rules.h2":"Как играть","rules.1":"Один телефон","rules.1p":"Телефон физически передаётся от игрока к игроку. Каждый смотрит только свою карточку и никому её не показывает.","rules.2":"Запомни персонажа","rules.2p":"Ты получаешь <strong>роль, цель и характер</strong>. Твоя задача — не просто выполнить цель, а <strong>отыгрывать своего персонажа</strong> во время всей сцены.","rules.main":"🎭 Главное правило","rules.mainp":"<strong>Ты не выполняешь задание — ты играешь персонажа, которому нужно выполнить задание.</strong>","rules.3":"Начинается сцена","rules.3p":"Когда все получили роли, положите телефон на стол. Все начинают играть одновременно, разговаривать, действовать и реагировать на происходящее.","rules.4":"События меняют ситуацию","rules.4p":"По ходу игры появляются неожиданные события. Не останавливайте сцену — продолжайте отыгрыш и вписывайте событие в происходящее.","rules.5":"Голосование","rules.5p":"После окончания времени каждый выбирает игрока, который лучше всего отыграл свою роль.","rules.play":"Понятно, играть",
 "more.back":"← Назад","more.title":"СЦЕНА+","more.h2":"Больше игр","more.sub":"Здесь потом появятся реклама, магазин сцен и СЦЕНА+.","more.available":"Доступные игры","more.mini":"5 стартовых + игры за просмотр рекламы","more.reward":"📺 Посмотреть рекламу → +5 игр","more.pro":"⭐ СЦЕНА+","more.prosub":"В будущем: все сцены, без рекламы и дополнительные режимы.","more.details":"Подробнее",
 "setup.back":"← Назад","setup.title":"НАСТРОЙКА","setup.h2":"Собираем игру","setup.sub":"Минимум 3 игрока. Телефон один.","setup.players":"Игроки","setup.playersSub":"Сколько человек играет?","setup.scene":"Ситуация","setup.variants":"9 вариантов","setup.difficulty":"Сложность","setup.duration":"Длительность","setup.deal":"Раздать секретные роли",
@@ -616,7 +627,7 @@ ru:{
 "results.title":"РЕЗУЛЬТАТЫ","results.done":"Раунд завершён","results.h2":"Раунд завершён","results.sub":"Лучший игрок получает голос.","results.new":"Новый раунд","results.home":"В главное меню",
 "reward.ad":"РЕКЛАМА","reward.h2":"Получить +5 игр","reward.p":"В настоящем приложении здесь будет рекламный ролик. В прототипе награда выдаётся сразу.","reward.video":"РЕКЛАМНЫЙ РОЛИК","reward.get":"Получить +5 игр","reward.cancel":"Отмена"},
 en:{
-"home.mvp":"MVP","home.title":"An ordinary situation.<br>Extraordinary people.","home.sub":"One phone for the whole group. Everyone gets a secret role, then you act out the scene together and try to complete your goal.","home.start":"Start game","home.rules":"How to play",
+"home.mvp":"ONE PHONE · PARTY GAME","home.metaPlayers":"players","home.metaPhone":"phone","home.metaRounds":"rounds","home.title":"An ordinary situation.<br><span>Extraordinary people.</span>","home.sub":"One phone for the whole group. Everyone gets a secret role, then you act out the scene together and try to complete your goal.","home.start":"Start game","home.rules":"How to play",
 "rules.back":"← Back","rules.title":"RULES","rules.h2":"How to play","rules.1":"One phone","rules.1p":"Pass the phone from player to player. Each person only looks at their own card and never shows it to anyone else.","rules.2":"Remember your character","rules.2p":"You get a <strong>role, goal and personality</strong>. Your job is not just to complete the goal — you must <strong>act as your character</strong> throughout the whole scene.","rules.main":"🎭 The main rule","rules.mainp":"<strong>You are not completing a task — you are playing a character who needs to complete a task.</strong>","rules.3":"The scene begins","rules.3p":"Once everyone has received a role, put the phone on the table. Everyone starts playing at the same time: talking, acting and reacting to what happens.","rules.4":"Events change the situation","rules.4p":"Unexpected events appear during the game. Do not stop the scene — keep acting and work the event into what is happening.","rules.5":"Vote","rules.5p":"When time is up, everyone chooses the player who acted their role the best.","rules.play":"Got it, play",
 "more.back":"← Back","more.title":"SCENE+","more.h2":"More games","more.sub":"Ads, a scene store and SCENE+ will appear here later.","more.available":"Available games","more.mini":"5 starter games + games for watching ads","more.reward":"📺 Watch ad → +5 games","more.pro":"⭐ SCENE+","more.prosub":"Coming later: all scenes, no ads and extra modes.","more.details":"Details",
 "setup.back":"← Back","setup.title":"SETUP","setup.h2":"Build your game","setup.sub":"Minimum 3 players. One phone.","setup.players":"Players","setup.playersSub":"How many people are playing?","setup.scene":"Scene","setup.variants":"9 options","setup.difficulty":"Difficulty","setup.duration":"Duration","setup.deal":"Deal secret roles",
@@ -636,7 +647,7 @@ window.setLanguage=function(lang){language=lang;localStorage.setItem("scena_lang
 
 function applyLanguage(){
 $("langRu").classList.toggle("active",language==='ru');$("langEn").classList.toggle("active",language==='en');
-const map={"homeMvp":"home.mvp","homeTitle":"home.title","homeSub":"home.sub","homeStart":"home.start","homeRules":"home.rules","rulesBack":"rules.back","rulesTitle":"rules.title","rulesH2":"rules.h2","rules1":"rules.1","rules1p":"rules.1p","rules2":"rules.2","rules2p":"rules.2p","rulesMain":"rules.main","rulesMainp":"rules.mainp","rules3":"rules.3","rules3p":"rules.3p","rules4":"rules.4","rules4p":"rules.4p","rules5":"rules.5","rules5p":"rules.5p","rulesPlay":"rules.play","moreBack":"more.back","moreTitle":"more.title","moreH2":"more.h2","moreSub":"more.sub","moreAvailable":"more.available","moreMini":"more.mini","moreReward":"more.reward","morePro":"more.pro","moreProsub":"more.prosub","moreDetails":"more.details","setupBack":"setup.back","setupTitle":"setup.title","setupH2":"setup.h2","setupSub":"setup.sub","setupPlayers":"setup.players","setupPlayersSub":"setup.playersSub","setupScene":"setup.scene","setupVariants":"setup.variants","setupDifficulty":"setup.difficulty","setupDuration":"setup.duration","setupDeal":"setup.deal","coverText":"pass.cover","passShow":"pass.show","roleOnly":"pass.only","passHide":"pass.hide","gameBack":"game.back","gameSituation":"game.situation","gameRule":"game.rule","gameTrigger":"game.trigger","gameFinish":"game.finish","voteTitle":"vote.title","voteOne":"vote.one","voteH2":"vote.h2","voteSub":"vote.sub","voteConfirm":"vote.confirm","resultsTitle":"results.title","resultsDone":"results.done","resultsH2":"results.h2","resultsSub":"results.sub","resultsNew":"results.new","resultsHome":"results.home","rewardAd":"reward.ad","rewardH2":"reward.h2","rewardP":"reward.p","rewardVideo":"reward.video","rewardGet":"reward.get","rewardCancel":"reward.cancel"};
+const map={"homeMvp":"home.mvp","homeMetaPlayers":"home.metaPlayers","homeMetaPhone":"home.metaPhone","homeMetaRounds":"home.metaRounds","homeTitle":"home.title","homeSub":"home.sub","homeStart":"home.start","homeRules":"home.rules","rulesBack":"rules.back","rulesTitle":"rules.title","rulesH2":"rules.h2","rules1":"rules.1","rules1p":"rules.1p","rules2":"rules.2","rules2p":"rules.2p","rulesMain":"rules.main","rulesMainp":"rules.mainp","rules3":"rules.3","rules3p":"rules.3p","rules4":"rules.4","rules4p":"rules.4p","rules5":"rules.5","rules5p":"rules.5p","rulesPlay":"rules.play","moreBack":"more.back","moreTitle":"more.title","moreH2":"more.h2","moreSub":"more.sub","moreAvailable":"more.available","moreMini":"more.mini","moreReward":"more.reward","morePro":"more.pro","moreProsub":"more.prosub","moreDetails":"more.details","setupBack":"setup.back","setupTitle":"setup.title","setupH2":"setup.h2","setupSub":"setup.sub","setupPlayers":"setup.players","setupPlayersSub":"setup.playersSub","setupScene":"setup.scene","setupVariants":"setup.variants","setupDifficulty":"setup.difficulty","setupDuration":"setup.duration","setupDeal":"setup.deal","coverText":"pass.cover","passShow":"pass.show","roleOnly":"pass.only","passHide":"pass.hide","gameBack":"game.back","gameSituation":"game.situation","gameRule":"game.rule","gameTrigger":"game.trigger","gameFinish":"game.finish","voteTitle":"vote.title","voteOne":"vote.one","voteH2":"vote.h2","voteSub":"vote.sub","voteConfirm":"vote.confirm","resultsTitle":"results.title","resultsDone":"results.done","resultsH2":"results.h2","resultsSub":"results.sub","resultsNew":"results.new","resultsHome":"results.home","rewardAd":"reward.ad","rewardH2":"reward.h2","rewardP":"reward.p","rewardVideo":"reward.video","rewardGet":"reward.get","rewardCancel":"reward.cancel"};
 Object.keys(map).forEach(function(id){const el=$(id);if(el)el.innerHTML=txt(map[id]);});
 $("passSecret").textContent=txt("pass.secret");
 const nav=document.querySelectorAll(".nav-btn");
@@ -722,7 +733,8 @@ const dur=language==='en'?[{id:120,title:"2 minutes",text:"Quick round"},{id:180
 $("durationChoices").innerHTML=dur.map(function(d){return '<button class="choice '+(state.duration===d.id?"active":"")+'" onclick="selectDuration('+d.id+')"><strong>'+d.title+'</strong><small>'+d.text+'</small></button>';}).join("");
 const hints=language==='en'?{easy:"🟢 <strong>Easy</strong> — just your main goal and personality. Easy to jump into.",normal:"🟡 <strong>Normal</strong> — adds a secret goal you must keep hidden.",hard:"🔴 <strong>Hard</strong> — secret goal plus a restriction that gets in your way."}:{easy:"🟢 <strong>Легко</strong> — только главная цель и характер. Быстро входишь в игру.",normal:"🟡 <strong>Нормально</strong> — добавляется секретная цель, которую нельзя раскрыть.",hard:"🔴 <strong>Жёстко</strong> — секретная цель плюс ограничение, которое мешает выполнить её."};
 $("difficultyHint").innerHTML=hints[state.difficulty];
-}
+const ss=$("setupSummary"); if(ss){const sc=language==='en'?scenesEN[state.scene]:scenes.find(function(x){return x.id===state.scene});const dn=language==='en'?({easy:"Easy",normal:"Normal",hard:"Hard"}[state.difficulty]):({easy:"Легко",normal:"Нормально",hard:"Жёстко"}[state.difficulty]);const mins=Math.round(state.duration/60);ss.textContent=(language==='en'?state.players+" players · ":state.players+" игрока · ")+sc.title+" · "+dn+" · "+mins+" "+(language==='en'?(mins===1?"minute":"minutes"):(mins===1?"минута":"минут"));}}
+
 
 window.selectScene=function(id){state.scene=id;renderChoices()};
 window.selectDifficulty=function(id){state.difficulty=id;renderChoices()};
@@ -764,17 +776,15 @@ $("roleIcon").textContent=r[0];$("roleName").textContent=r[1];
 let details='<div class="secret-row"><div class="label">'+txt("pass.main")+'</div><div class="secret-value">'+r[2]+'</div></div>'+'<div class="secret-row"><div class="label">'+txt("pass.character")+'</div><div class="secret-value">'+r[4]+'</div></div>';
 if(state.difficulty==="normal"||state.difficulty==="hard")details+='<div class="secret-row"><div class="label">'+txt("pass.secretGoal")+'</div><div class="secret-value">'+r[3]+'</div></div>';
 if(state.difficulty==="hard")details+='<div class="secret-row"><div class="label">'+txt("pass.restriction")+'</div><div class="secret-value">'+r[5]+'</div></div>';
-$("roleDetails").innerHTML=details;$("passCover").style.display="flex";$("passRole").style.display="none";applyLanguage();
+$("roleDetails").innerHTML=details;$("passCover").style.display="flex";$("passRole").style.display="flex";$("passFlip").classList.remove("flipped");applyLanguage();
 }
 
 window.revealRole=function(){
-$("passCover").style.display="none";
-$("passRole").style.display="flex";
+$("passFlip").classList.add("flipped");
 };
 
 window.hideRoleAndPass=function(){
-$("passRole").style.display="none";
-$("passCover").style.display="flex";
+$("passFlip").classList.remove("flipped");
 
 if(state.pass<state.players-1){
 state.pass++;
