@@ -467,6 +467,9 @@ body:before{
   .pass-role-card .secret-value{font-size:16px;line-height:1.32;}
 }
 </style>
+<style>/* v31 */
+.game-guide{position:relative;background:linear-gradient(145deg,#15111f,#0f0f14);border:1px solid #30243f;border-radius:18px;padding:17px 18px;margin-bottom:11px;box-shadow:0 12px 32px rgba(0,0,0,.14);overflow:hidden}.game-guide:before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:3px;background:#7c3cff;border-radius:0 4px 4px 0;box-shadow:0 0 18px rgba(124,60,255,.42)}.game-guide-title{display:flex;align-items:center;gap:8px;color:#b99cff;text-transform:uppercase;letter-spacing:1.1px;font-size:10px;font-weight:950;margin-bottom:9px}.game-guide-title:before{content:"";width:7px;height:7px;border-radius:50%;background:#7c3cff;box-shadow:0 0 12px rgba(124,60,255,.7)}.game-guide-text{font-size:15px;line-height:1.43;color:#c0bec8;margin:0}.game-rules-list{list-style:none;padding:0;margin:0;display:grid;gap:7px}.game-rules-list li{position:relative;padding:11px 12px 11px 34px;background:#111115;border:1px solid #292930;border-radius:12px;color:#e9e7ed;font-size:14px;line-height:1.35;font-weight:800}.game-rules-list li:before{content:"✓";position:absolute;left:11px;top:10px;color:#a98bdf;font-weight:950;font-size:14px}@media(max-width:520px){.game-guide{padding:15px 15px;margin-bottom:9px}.game-guide-text{font-size:14px}.game-rules-list li{font-size:13px;padding:10px 10px 10px 32px}.game-rules-list li:before{left:10px;top:9px}}
+</style>
 </head>
 <body>
 <div class="lang-switch" aria-label="Language"><button class="lang-btn active" id="langRu" onclick="setLanguage('ru')">RU</button><button class="lang-btn" id="langEn" onclick="setLanguage('en')">EN</button></div>
@@ -559,7 +562,8 @@ body:before{
 <section id="game" class="screen">
 <div class="top"><button class="back" id="gameBack" onclick="quitGame()">← Выйти</button><div class="brand">СЦЕНА</div></div>
 <div class="game-head"><div><div class="muted" id="gameSituation">Ситуация</div><h2 id="gameScene" style="margin:4px 0 0">Сцена</h2></div><div><div id="timer" class="timer">03:00</div><div id="timerBar" style="height:3px;width:100%;background:#272733;border-radius:9px;margin-top:7px;overflow:hidden"><div id="timerFill" style="height:100%;width:100%;background:#7c3cff;border-radius:9px;transition:width .9s linear"></div></div></div></div>
-<div class="scene-box"><div class="muted" id="gameRule">Правило</div><h3 id="gamePrompt" style="margin:7px 0 0">Отыгрывайте ситуацию.</h3></div>
+<div class="game-guide"><div class="game-guide-title" id="gameContextTitle">Что происходит</div><div id="gameContext" class="game-guide-text"></div></div>
+<div class="game-guide"><div class="game-guide-title" id="gameRulesTitle">Во время сцены</div><ul id="gameRulesList" class="game-rules-list"></ul></div>
 <div id="eventBox" class="event"><div class="event-title" id="gameEvent">Случайное событие</div><div id="eventText" class="event-empty">Пока ничего не произошло.</div></div>
 <div class="actions">
 <button class="btn" id="gameTrigger" onclick="triggerEvent()">Случайное событие</button>
@@ -597,7 +601,7 @@ body:before{
 const scenes=[
 {id:"store",title:"Магазин",icon:"🛒",prompt:"Обычный магазин. У каждого своя скрытая причина оказаться здесь.",
 roles:[
-["🧑‍💼","Покупатель","Добейся возврата товара.","Заставь продавца самому предложить решение.","Говори уверенно и не признавайся, что нервничаешь.","Нельзя напрямую попросить вернуть деньги."],
+["🧑‍💼","Покупатель","Добейся, чтобы продавец согласился принять товар обратно.","Заставь продавца самому предложить решение.","Говори уверенно и не признавайся, что нервничаешь.","Нельзя напрямую попросить вернуть деньги."],
 ["🧑‍💼","Продавец","Не соглашайся на возврат сразу.","Выясни, чего на самом деле хочет покупатель.","Будь вежливым, но максимально формальным.","Нельзя просто сказать «нет» и закончить разговор."],
 ["🛡️","Охранник","Следи, чтобы в магазине всё было под контролем.","Найди противоречие в истории любого игрока.","Относись ко всему подозрительно.","Нельзя обвинять человека без объяснения причины."],
 ["📦","Кладовщик","Не дай нарушить порядок выдачи товаров.","Заставь кого-нибудь объяснить свои действия.","Постоянно ссылайся на внутренние правила.","Нельзя покидать свою «зону»."],
@@ -606,16 +610,16 @@ roles:[
 ]},
 {id:"airport",title:"Аэропорт",icon:"✈️",prompt:"Рейс скоро закрывается, а у каждого участника своя проблема.",
 roles:[
-["🧳","Пассажир","Успей добиться решения своей проблемы до вылета.","Найди союзника.","Ты очень торопишься.","Нельзя просто уйти от разговора."],
+["🧳","Пассажир","До закрытия посадки добейся решения своей проблемы с рейсом.","Найди союзника.","Ты очень торопишься.","Нельзя просто уйти от разговора."],
 ["👩‍✈️","Сотрудник аэропорта","Следи за правилами и не допускай хаоса.","Поймай кого-нибудь на противоречии.","Говори спокойно и официально.","Нельзя делать исключения без убедительной причины."],
-["🗺️","Турист","Понять, куда тебе вообще нужно идти.","Узнай важную информацию у двух игроков.","Делай вид, что всё под контролем.","Нельзя признаться, что ты полностью потерялся."],
+["🗺️","Турист","Узнай, к какому выходу тебе нужно идти и что делать дальше.","Узнай важную информацию у двух игроков.","Делай вид, что всё под контролем.","Нельзя признаться, что ты полностью потерялся."],
 ["🎫","Уверенный пассажир","Добейся особого отношения.","Убеди кого-то заступиться за тебя.","Веди себя так, будто тебя здесь все знают.","Нельзя прямо объяснять, почему тебе должны помочь."],
 ["📢","Представитель авиакомпании","Успокой ситуацию и добиться общего решения.","Заставь двух людей договориться.","Ты уверен, что знаешь решение.","Нельзя решать проблему только в пользу одного человека."],
 ["🧑‍✈️","Член экипажа","Собери нужную информацию перед посадкой.","Выведай у кого-нибудь важную деталь.","Будь максимально собранным.","Нельзя первым раскрывать, что именно тебе нужно."]
 ]},
 {id:"interview",title:"Собеседование",icon:"💼",prompt:"Компания ищет нового сотрудника, но у участников совсем разные интересы.",
 roles:[
-["👔","Кандидат","Убедить работодателя, что ты лучший выбор.","Скрыть один очевидный недостаток.","Отвечай уверенно даже на неудобные вопросы.","Нельзя напрямую говорить, что ты лучше остальных."],
+["👔","Кандидат","Убедить работодателя, что именно тебя стоит взять на работу.","Скрыть один очевидный недостаток.","Отвечай уверенно даже на неудобные вопросы.","Нельзя напрямую говорить, что ты лучше остальных."],
 ["🧑‍💼","Рекрутер","Выбери кандидата, который подходит компании.","Раскрой хотя бы одну слабость кандидата.","Не показывай сразу, кто тебе нравится.","Нельзя задать два одинаковых вопроса."],
 ["📋","Руководитель","Понять, кто реально сможет работать в команде.","Заставь кандидатов взаимодействовать.","Перебивай только по делу.","Нельзя принимать решение в одиночку."],
 ["💻","Сотрудник компании","Понять, станет ли новый человек проблемой.","Проверь реакцию кандидата на давление.","Ты немного недоволен текущей работой.","Нельзя прямо говорить, что ты хочешь сменить работу."],
@@ -623,15 +627,15 @@ roles:[
 ]},
 {id:"restaurant",title:"Ресторан",icon:"🍽️",prompt:"За одним столом оказались люди, которым нужно решить одну общую проблему.",
 roles:[
-["🍝","Гость","Добейся изменения своего заказа.","Убедить другого гостя поддержать тебя.","Ты абсолютно уверен, что прав.","Нельзя повышать голос."],
+["🍝","Гость","Добейся, чтобы твой заказ изменили так, как тебе нужно.","Убедить другого гостя поддержать тебя.","Ты абсолютно уверен, что прав.","Нельзя повышать голос."],
 ["🧑‍🍳","Шеф","Не допусти, чтобы ресторан выглядел виноватым.","Заставь гостей договориться.","Ты очень гордишься своей кухней.","Нельзя сразу признавать ошибку."],
-["🧾","Администратор","Сохранить спокойствие и решить спор.","Понять, кто первым начал конфликт.","Говори максимально вежливо.","Нельзя обещать скидку."],
+["🧾","Администратор","Разобравшись в споре, добейся решения, с которым согласны обе стороны.","Понять, кто первым начал конфликт.","Говори максимально вежливо.","Нельзя обещать скидку."],
 ["⭐","Постоянный гость","Добиться особого отношения.","Заставь администратора сделать исключение.","Веди себя так, будто тебя здесь хорошо знают.","Нельзя прямо требовать привилегий."],
 ["📸","Обозреватель","Понять, стоит ли ресторан хорошего отзыва.","Выведай у двух людей их мнение.","Делай вид, что ты обычный гость.","Нельзя говорить, что ты оцениваешь ресторан."]
 ]},
 {id:"hotel",title:"Отель",icon:"🏨",prompt:"Заселение пошло не по плану, а свободных решений становится всё меньше.",
 roles:[
-["🧳","Гость","Получить подходящий номер.","Заставь сотрудника предложить тебе вариант первым.","Будь вежливым, но настойчивым.","Нельзя прямо требовать другой номер."],
+["🧳","Гость","Добейся подходящего номера с учётом своей проблемы.","Заставь сотрудника предложить тебе вариант первым.","Будь вежливым, но настойчивым.","Нельзя прямо требовать другой номер."],
 ["🛎️","Администратор","Расселить всех без конфликта.","Пойми, кто из гостей скрывает настоящую проблему.","Сохраняй профессиональный тон.","Нельзя обещать то, чего нет."],
 ["🧑‍🤝‍🧑","Путешественник","Убедить кого-то поменяться с тобой.","Сделай так, чтобы инициатива исходила не от тебя.","Ты немного подозрителен.","Нельзя говорить настоящую причину."],
 ["💼","Командировочный","Получить условия, которые тебе нужны для работы.","Найди союзника среди гостей.","Ты постоянно думаешь о времени.","Нельзя показывать раздражение."],
@@ -639,15 +643,15 @@ roles:[
 ]},
 {id:"school",title:"Школа",icon:"🏫",prompt:"После неожиданной ситуации несколько людей пытаются понять, что произошло.",
 roles:[
-["📚","Ученик","Избежать неприятного решения.","Заставь другого ученика подтвердить твою версию.","Говори уверенно.","Нельзя первым обвинять другого."],
-["👩‍🏫","Учитель","Понять, что произошло, и принять решение.","Найди несостыковку в рассказе.","Будь строгим, но справедливым.","Нельзя сразу объявлять наказание."],
+["📚","Ученик","Добейся, чтобы решение не обернулось для тебя неприятными последствиями.","Заставь другого ученика подтвердить твою версию.","Говори уверенно.","Нельзя первым обвинять другого."],
+["👩‍🏫","Учитель","Выясни, что произошло, и добейся решения по ситуации.","Найди несостыковку в рассказе.","Будь строгим, но справедливым.","Нельзя сразу объявлять наказание."],
 ["🧑‍🎓","Староста","Помочь группе прийти к общему решению.","Убедить учителя выслушать всех.","Ты очень организованный.","Нельзя принимать решение за всех."],
 ["📝","Свидетель","Рассказать только то, что видел.","Сделай так, чтобы кто-нибудь сам задал тебе нужный вопрос.","Ты не уверен во всех деталях.","Нельзя выдумывать новые факты."],
 ["🎒","Новенький","Понять правила и не оказаться крайним.","Найди человека, который станет на твою сторону.","Ты стараешься казаться спокойным.","Нельзя говорить, что тебе страшно ошибиться."]
 ]},
 {id:"office",title:"Офис",icon:"🏢",prompt:"Перед важным дедлайном команда обнаруживает проблему, и никто не хочет брать вину на себя.",
 roles:[
-["💻","Менеджер","Добиться решения проблемы до дедлайна.","Заставь другого человека добровольно взять одну задачу.","Ты уверен, что контролируешь ситуацию.","Нельзя напрямую обвинять коллегу."],
+["💻","Менеджер","Добейся решения проблемы до того, как закончится дедлайн.","Заставь другого человека добровольно взять одну задачу.","Ты уверен, что контролируешь ситуацию.","Нельзя напрямую обвинять коллегу."],
 ["📊","Аналитик","Понять, где появилась ошибка.","Добейся от двух людей разных версий происходящего.","Говори только фактами.","Нельзя сразу показывать все свои данные."],
 ["🧑‍💼","Начальник","Понять, кто и как исправит проблему.","Заставь команду договориться о плане.","Ты не любишь оправдания.","Нельзя самому выполнять чужую задачу."],
 ["🗂️","Сотрудник","Избежать лишней работы, но выглядеть полезным.","Перенаправь одну задачу другому человеку.","Ты очень занят.","Нельзя прямо отказываться помогать."],
@@ -655,7 +659,7 @@ roles:[
 ]},
 {id:"train",title:"Поезд",icon:"🚆",prompt:"Поезд стоит дольше обычного, и пассажиры пытаются разобраться, что делать дальше.",
 roles:[
-["🎫","Пассажир","Понять, когда и как продолжится поездка.","Добейся от сотрудника конкретной информации.","Ты очень торопишься.","Нельзя просто выйти из ситуации."],
+["🎫","Пассажир","Добейся понятного ответа о том, когда и как продолжится поездка.","Добейся от сотрудника конкретной информации.","Ты очень торопишься.","Нельзя просто выйти из ситуации."],
 ["🚉","Проводник","Сохранить порядок в вагоне.","Убедить людей следовать одному плану.","Ты спокоен в любой ситуации.","Нельзя обещать точное время без информации."],
 ["🧳","Опоздавший","Вернуть контроль над своей поездкой.","Найди человека, который тебе поможет.","Ты пытаешься скрыть, почему опоздал.","Нельзя первым рассказывать всю историю."],
 ["📱","Созвонщик","Провести важный разговор несмотря на ситуацию.","Заставь другого игрока создать тебе подходящие условия.","Ты делаешь вид, что всё нормально.","Нельзя повышать голос."],
@@ -663,10 +667,10 @@ roles:[
 ]},
 {id:"wedding",title:"Праздник",icon:"🎉",prompt:"Большой праздник идёт не по плану, а гости пытаются сохранить хорошее настроение.",
 roles:[
-["🎤","Ведущий","Не допустить, чтобы праздник развалился.","Заставь двух гостей участвовать в одном решении.","Ты всегда говоришь уверенно.","Нельзя объявлять проблему напрямую."],
+["🎤","Ведущий","Добейся, чтобы праздник продолжился без серьёзного конфликта.","Заставь двух гостей участвовать в одном решении.","Ты всегда говоришь уверенно.","Нельзя объявлять проблему напрямую."],
 ["🎁","Гость","Добиться того, чтобы тебе уделили внимание.","Убедить другого гостя помочь тебе.","Ты очень общительный.","Нельзя прямо просить внимания."],
 ["📸","Фотограф","Получить идеальный момент для фотографии.","Собери вокруг себя минимум двух людей.","Ты постоянно ищешь удачный кадр.","Нельзя объяснять, зачем именно тебе нужен человек."],
-["🍰","Организатор","Решить неожиданную проблему с программой.","Заставь ведущего изменить план.","Ты немного нервничаешь.","Нельзя показывать панику."],
+["🍰","Организатор","Реши неожиданную проблему так, чтобы программа праздника могла продолжиться.","Заставь ведущего изменить план.","Ты немного нервничаешь.","Нельзя показывать панику."],
 ["🥳","Друг виновника праздника","Поддержать главного человека вечера.","Не дай одному конфликту испортить настроение.","Ты слишком оптимистичен.","Нельзя соглашаться с негативным сценарием."]
 ]}
 ];
@@ -711,61 +715,63 @@ wedding:["The host announces an unscheduled pause.","You urgently need to decide
 
 const scenesEN={
 store:{title:"Store",prompt:"An ordinary store. Everyone has a hidden reason for being here.",roles:[
-["🧑‍💼","Customer","Get a refund for an item.","Make the salesperson suggest a solution on their own.","Speak confidently and never admit that you are nervous.","You cannot directly ask for a refund."],
+["🧑‍💼","Customer","Get the salesperson to agree to take the item back.","Make the salesperson suggest a solution on their own.","Speak confidently and never admit that you are nervous.","You cannot directly ask for a refund."],
 ["🛒","Salesperson","Solve the customer's problem.","Make someone else take responsibility for the situation.","Stay polite even when pressured.","You cannot say the customer is wrong."],
 ["📦","Warehouse Worker","Find out where the missing item went.","Get someone to admit they handled the item.","You are always in a hurry.","You cannot accuse anyone directly."],
 ["🧾","Cashier","Keep the line moving and avoid a conflict.","Make two people agree on one solution.","You are extremely practical.","You cannot leave your place."],
 ["👀","Regular Customer","Figure out what is really going on.","Convince someone to tell you an important detail.","Act as if you have seen everything before.","You cannot reveal why you are interested."]]},
 airport:{title:"Airport",prompt:"A flight is about to depart, but everyone has a different problem to solve.",roles:[
-["🧳","Passenger","Make sure you can board the flight.","Get another player to help you first.","You are worried about being late.","You cannot ask anyone directly to help you."],
+["🧳","Passenger","Solve your flight problem before boarding closes.","Get another player to help you first.","You are worried about being late.","You cannot ask anyone directly to help you."],
 ["🛂","Security Officer","Keep the area calm and organized.","Find out who is hiding important information.","Be strict but professional.","You cannot raise your voice."],
 ["🎫","Traveler","Find your way to the correct gate.","Get two different people to confirm the route.","You are convinced you know the airport better than everyone.","You cannot admit that you are lost."],
 ["📢","Airport Employee","Help everyone understand what is happening.","Make two people agree on a plan.","You are calm under pressure.","You cannot make up information."],
 ["🧑‍✈️","Crew Member","Collect the information you need before boarding.","Get an important detail from someone.","Stay completely focused.","You cannot reveal what information you need first."]]},
 interview:{title:"Job Interview",prompt:"A company is hiring, but everyone involved has different interests.",roles:[
-["👔","Candidate","Convince the employer that you are the best choice.","Hide one obvious weakness.","Answer confidently even when the question is uncomfortable.","You cannot directly say you are better than the others."],
+["👔","Candidate","Convince the employer that you should be hired.","Hide one obvious weakness.","Answer confidently even when the question is uncomfortable.","You cannot directly say you are better than the others."],
 ["🧑‍💼","Recruiter","Choose the candidate who fits the company.","Expose at least one candidate's weakness.","Do not show who you prefer right away.","You cannot ask the same question twice."],
 ["📋","Manager","Understand who can really work in a team.","Make the candidates interact with each other.","Interrupt only when necessary.","You cannot make the decision alone."],
 ["💻","Company Employee","Find out whether the new person will become a problem.","Test a candidate's reaction to pressure.","You are slightly unhappy with your current job.","You cannot say directly that you want to change jobs."],
 ["🎓","Strong Candidate","Make sure people remember you.","Help another candidate once.","Do not brag directly.","You cannot talk about your achievements twice in a row."]]},
 restaurant:{title:"Restaurant",prompt:"People at one table need to solve one shared problem.",roles:[
-["🍝","Guest","Get your order changed.","Convince another guest to support you.","You are absolutely sure you are right.","You cannot raise your voice."],
+["🍝","Guest","Get your order changed the way you need.","Convince another guest to support you.","You are absolutely sure you are right.","You cannot raise your voice."],
 ["🧑‍🍳","Chef","Do not let the restaurant look responsible.","Make the guests reach an agreement.","You are very proud of your cooking.","You cannot admit a mistake immediately."],
 ["🧾","Manager","Stay calm and solve the dispute.","Figure out who started the conflict.","Be extremely polite.","You cannot promise a discount."],
 ["⭐","Regular Guest","Get special treatment.","Make the manager make an exception.","Act as if everyone here knows you well.","You cannot directly demand special treatment."],
 ["📸","Reviewer","Decide whether the restaurant deserves a good review.","Find out what two people think.","Pretend you are an ordinary guest.","You cannot say that you are reviewing the restaurant."]]},
 hotel:{title:"Hotel",prompt:"Check-in goes wrong, and there are fewer and fewer easy solutions.",roles:[
-["🧳","Guest","Get the room that works for you.","Make the employee suggest an option first.","Be polite but persistent.","You cannot directly demand another room."],
+["🧳","Guest","Get a room that solves your problem.","Make the employee suggest an option first.","Be polite but persistent.","You cannot directly demand another room."],
 ["🛎️","Receptionist","Settle everyone without a conflict.","Figure out which guest is hiding the real problem.","Keep a professional tone.","You cannot promise something that does not exist."],
 ["🧑‍🤝‍🧑","Traveler","Convince someone to switch with you.","Make the other person initiate the idea.","You are slightly suspicious.","You cannot say the real reason."],
 ["💼","Business Traveler","Get the conditions you need for work.","Find an ally among the guests.","You are constantly thinking about time.","You cannot show irritation."],
 ["🧹","Hotel Employee","Convince everyone the problem can be solved right now.","Make two people agree to one plan.","You are overly confident in your abilities.","You cannot blame your colleagues."]]},
 school:{title:"School",prompt:"After an unexpected situation, several people try to understand what happened.",roles:[
-["📚","Student","Avoid an unpleasant decision.","Get another student to confirm your version.","Speak confidently.","You cannot accuse someone first."],
+["📚","Student","Make sure the decision does not turn against you.","Get another student to confirm your version.","Speak confidently.","You cannot accuse someone first."],
 ["👩‍🏫","Teacher","Understand what happened and make a decision.","Find a contradiction in someone's story.","Be strict but fair.","You cannot announce a punishment immediately."],
 ["🧑‍🎓","Class Representative","Help the group reach a shared decision.","Convince the teacher to hear everyone out.","You are very organized.","You cannot make the decision for everyone."],
 ["📝","Witness","Tell only what you actually saw.","Make someone ask you the question you need.","You are unsure about some details.","You cannot invent new facts."],
 ["🎒","New Student","Understand the rules and avoid becoming the scapegoat.","Find someone who will take your side.","You try to look calm.","You cannot say that you are afraid of making a mistake."]]},
 office:{title:"Office",prompt:"A team finds a problem just before an important deadline, and nobody wants the blame.",roles:[
-["💻","Manager","Solve the problem before the deadline.","Make another person voluntarily take one task.","You are sure you control the situation.","You cannot directly blame a colleague."],
+["💻","Manager","Get the problem solved before the deadline.","Make another person voluntarily take one task.","You are sure you control the situation.","You cannot directly blame a colleague."],
 ["📊","Analyst","Find where the mistake appeared.","Get two people to give you different versions of events.","Speak only in facts.","You cannot show all your data immediately."],
 ["🧑‍💼","Boss","Understand who will fix the problem and how.","Make the team agree on a plan.","You hate excuses.","You cannot do someone else's task yourself."],
 ["🗂️","Employee","Avoid extra work while still looking useful.","Redirect one task to another person.","You are extremely busy.","You cannot directly refuse to help."],
 ["📞","Client","Get a clear answer from the team.","Make the employees give a specific deadline.","You are starting to lose patience.","You cannot threaten to leave."]]},
 train:{title:"Train",prompt:"The train is stopped longer than usual, and passengers try to figure out what happens next.",roles:[
-["🎫","Passenger","Find out when and how the trip will continue.","Get specific information from an employee.","You are in a huge hurry.","You cannot simply walk away from the situation."],
+["🎫","Passenger","Get a clear answer about when and how the trip will continue.","Get specific information from an employee.","You are in a huge hurry.","You cannot simply walk away from the situation."],
 ["🚉","Conductor","Keep order in the carriage.","Convince everyone to follow one plan.","You stay calm in any situation.","You cannot promise an exact time without information."],
 ["🧳","Late Traveler","Regain control of your trip.","Find someone who can help you.","You are hiding why you were late.","You cannot tell the whole story first."],
 ["📱","Caller","Have an important conversation despite the situation.","Make another player create the conditions you need.","Pretend everything is fine.","You cannot raise your voice."],
 ["🗺️","Tourist","Figure out where you are and where to go next.","Get two different versions of the route.","You are sure you know the way.","You cannot admit that you are lost."]]},
 wedding:{title:"Party",prompt:"A big celebration is not going according to plan, and guests try to keep the mood positive.",roles:[
-["🎤","Host","Do not let the party fall apart.","Make two guests take part in one decision.","You always speak with confidence.","You cannot announce the problem directly."],
+["🎤","Host","Make sure the party continues without a serious conflict.","Make two guests take part in one decision.","You always speak with confidence.","You cannot announce the problem directly."],
 ["🎁","Guest","Make sure people pay attention to you.","Convince another guest to help you.","You are very outgoing.","You cannot directly ask for attention."],
 ["📸","Photographer","Get the perfect moment for a photo.","Gather at least two people around you.","You are always looking for a great shot.","You cannot explain why you need someone."],
 ["🍰","Organizer","Solve an unexpected problem with the program.","Make the host change the plan.","You are a little nervous.","You cannot show panic."],
 ["🥳","Best Friend","Support the main person of the evening.","Do not let one conflict ruin the mood.","You are too optimistic.","You cannot agree with a negative scenario."]]}
 };
 
+
+const sceneGuides={ru:{store:"Вы в обычном магазине. Покупатели и сотрудники оказались рядом, и у каждого есть своя причина вмешаться в происходящее. Сцена строится вокруг общения и попыток решить возникшую проблему.",airport:"Вы в аэропорту перед вылетом. Рейс скоро закрывается, вокруг много людей, а из-за разных проблем и спешки ситуация постепенно становится напряжённее.",interview:"Вы на собеседовании. Компания пытается понять, кто подходит ей, а участники одновременно пытаются добиться своего и повлиять на решение остальных.",restaurant:"Вы в ресторане за одним столом. Возникла проблема с заказом или обслуживанием, и гостям и сотрудникам нужно разобраться в ней прямо во время разговора.",hotel:"Вы на ресепшене отеля. Заселение пошло не совсем по плану, свободных вариантов немного, поэтому игрокам приходится договариваться и искать решение.",school:"Вы в школе после неожиданной ситуации. Несколько человек знают разные части истории, и теперь нужно понять, что произошло, не потеряв контроль над разговором.",office:"Вы в офисе прямо перед важным дедлайном. Обнаружилась проблема, которую нужно решить, пока участники пытаются понять причины и распределить ответственность.",train:"Вы в поезде, который задержался или изменил обычный ход поездки. Пассажиры и сотрудники пытаются разобраться, что происходит и что делать дальше.",wedding:"Вы на большом празднике. Что-то идёт не по плану, но участники стараются сохранить нормальную атмосферу и одновременно решить возникшую проблему."},en:{store:"You are in an ordinary store. Customers and employees are nearby, and everyone has their own reason to get involved. The scene is about communication and solving the problem that appears.",airport:"You are at an airport before departure. The flight is about to close, people are in a hurry, and different problems are making the situation more tense.",interview:"You are at a job interview. The company is trying to understand who fits, while everyone involved is also trying to influence the final decision.",restaurant:"You are at a restaurant table. A problem with the order or service has appeared, and guests and staff have to deal with it during the conversation.",hotel:"You are at a hotel reception. Check-in has not gone as planned and there are only a few options left, so the players have to negotiate and find a solution.",school:"You are at school after an unexpected incident. Several people know different parts of the story, and now everyone is trying to understand what happened without losing control of the conversation.",office:"You are in an office just before an important deadline. A problem has appeared, and the players need to solve it while figuring out what happened and who will handle it.",train:"You are on a train that has been delayed or changed its normal route. Passengers and staff are trying to understand what is happening and what to do next.",wedding:"You are at a big celebration. Something is not going according to plan, but everyone is trying to keep the mood normal while solving the problem."}};
 
 const state={players:4,scene:"store",difficulty:"normal",duration:180,pass:0,roles:[],playerNames:[],usedEvents:[],time:180,timer:null,vote:null,votePlayer:0,voteRatings:[],credits:Number(localStorage.getItem("scena_credits")||5),gamesPlayed:Number(localStorage.getItem("scena_games_played")||0)};
 
@@ -783,7 +789,7 @@ ru:{
 "setup.back":"← Назад","setup.title":"НАСТРОЙКА","setup.h2":"Собираем игру","setup.sub":"Минимум 3 игрока. Телефон один.","setup.players":"Игроки","setup.playersSub":"Сколько человек играет?","setup.scene":"Ситуация","setup.variants":"9 вариантов","setup.random":"Случайная сцена","setup.difficulty":"Сложность","setup.duration":"Длительность","setup.deal":"Раздать секретные роли",
 "names.back":"← Назад","names.title":"ИМЕНА","names.h2":"Кто играет?","names.sub":"Введите имена всех игроков. Потом мы случайно перемешаем их порядок.","names.note":"Каждое имя должно быть уникальным.","names.continue":"Продолжить →",
 "pass.secret":"СЕКРЕТНО","pass.show":"Показать мою роль","pass.only":"Теперь можно посмотреть только тебе.","pass.hide":"Запомнил → скрыть и передать","pass.cover":"Телефон уже у тебя.<br>Убедись, что никто не смотрит.","pass.main":"Главная цель","pass.character":"Характер","pass.secretGoal":"Секретная цель","pass.restriction":"Ограничение",
-"game.back":"← Выйти","game.situation":"Ситуация","game.rule":"Правило","game.defaultRule":"Отыгрывайте ситуацию.","game.empty":"Пока ничего не произошло.","game.event":"Случайное событие","game.trigger":"Случайное событие","game.finish":"Закончить сцену",
+"game.back":"← Выйти","game.situation":"Ситуация","game.rule":"Ситуация","game.defaultRule":"Отыгрывайте ситуацию.","game.contextTitle":"Что происходит","game.rulesTitle":"Во время сцены","game.rule1":"Играй своего персонажа, а не просто выполняй цель.","game.rule2":"Не показывай свою цель другим игрокам.","game.empty":"Пока ничего не произошло.","game.event":"Случайное событие","game.trigger":"Случайное событие","game.finish":"Закончить сцену",
 "vote.title":"ГОЛОСОВАНИЕ","vote.one":"Игрок 1 / 4","vote.h2":"Оцени игрока","vote.sub":"Обсудите и выберите ответ по каждому пункту.","vote.confirm":"Подтвердить оценки","vote.yes":"Да","vote.no":"Нет","vote.mainQ":"Справился с главной целью?","vote.secretQ":"Справился с секретной целью?","vote.characterQ":"Придерживался характера?","vote.restrictionQ":"Соблюдал ограничение?",
 "results.title":"РЕЗУЛЬТАТЫ","results.done":"Раунд завершён","results.h2":"Раунд завершён","results.sub":"Лучший игрок получает голос.","results.new":"Новый раунд","results.home":"В главное меню",
 "reward.ad":"РЕКЛАМА","reward.h2":"Получить +5 игр","reward.p":"В настоящем приложении здесь будет рекламный ролик. В прототипе награда выдаётся сразу.","reward.video":"РЕКЛАМНЫЙ РОЛИК","reward.get":"Получить +5 игр","reward.cancel":"Отмена"},
@@ -794,7 +800,7 @@ en:{
 "setup.back":"← Back","setup.title":"SETUP","setup.h2":"Build your game","setup.sub":"Minimum 3 players. One phone.","setup.players":"Players","setup.playersSub":"How many people are playing?","setup.scene":"Scene","setup.variants":"9 options","setup.random":"Random scene","setup.difficulty":"Difficulty","setup.duration":"Duration","setup.deal":"Deal secret roles",
 "names.back":"← Back","names.title":"NAMES","names.h2":"Who is playing?","names.sub":"Enter everyone’s name. We will then randomly shuffle the order.","names.note":"Each name must be unique.","names.continue":"Continue →",
 "pass.secret":"SECRET","pass.show":"Reveal my role","pass.only":"Only you should look now.","pass.hide":"Remember → hide and pass","pass.cover":"The phone is yours.<br><strong>Make sure nobody is looking.</strong>","pass.main":"Main goal","pass.character":"Personality","pass.secretGoal":"Secret goal","pass.restriction":"Restriction",
-"game.back":"← Exit","game.situation":"Situation","game.rule":"Rule","game.defaultRule":"Act out the situation.","game.empty":"Nothing has happened yet.","game.event":"Random event","game.trigger":"Random event","game.finish":"End scene",
+"game.back":"← Exit","game.situation":"Situation","game.rule":"Situation","game.defaultRule":"Act out the situation.","game.contextTitle":"What is happening","game.rulesTitle":"During the scene","game.rule1":"Play your character, not just complete the goal.","game.rule2":"Do not show your goal to the other players.","game.empty":"Nothing has happened yet.","game.event":"Random event","game.trigger":"Random event","game.finish":"End scene",
 "vote.title":"VOTING","vote.one":"Player 1 / 4","vote.h2":"Rate the player","vote.sub":"Discuss and choose an answer for each point.","vote.confirm":"Confirm ratings","vote.yes":"Yes","vote.no":"No","vote.mainQ":"Did they complete the main goal?","vote.secretQ":"Did they complete the secret goal?","vote.characterQ":"Did they stay in character?","vote.restrictionQ":"Did they follow the restriction?",
 "results.title":"RESULTS","results.done":"Round complete","results.h2":"Round complete","results.sub":"The best player gets the vote.","results.new":"New round","results.home":"Main menu",
 "reward.ad":"ADVERTISEMENT","reward.h2":"Get +5 games","reward.p":"In the real app, a video ad will play here. In this prototype, the reward is granted instantly.","reward.video":"AD VIDEO","reward.get":"Get +5 games","reward.cancel":"Cancel"}
@@ -991,12 +997,13 @@ startGame();
 },100);
 };
 
-function startGameTextOnly(){const s=contentScene();$("gameScene").textContent=s.title;$("gamePrompt").textContent=s.prompt;$("eventText").textContent=txt("game.empty");}
+function renderGameGuide(){const guide=sceneGuides[language][state.scene]||"";$("gameContextTitle").textContent=txt("game.contextTitle");$("gameRulesTitle").textContent=txt("game.rulesTitle");$("gameContext").textContent=guide;$("gameRulesList").innerHTML=[1,2].map(function(i){return "<li>"+txt("game.rule"+i)+"</li>"}).join("");}
+function startGameTextOnly(){const s=contentScene();$("gameScene").textContent=s.title;renderGameGuide();$("eventText").textContent=txt("game.empty");}
 
 function startGame(){
 const s=contentScene();
 $("gameScene").textContent=s.title;
-$("gamePrompt").textContent=s.prompt;
+renderGameGuide();
 state.time=state.duration;
 state.usedEvents=[];
 $("eventText").textContent=txt("game.empty");
