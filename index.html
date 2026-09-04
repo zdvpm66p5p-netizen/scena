@@ -298,45 +298,66 @@ body:before{
   to{opacity:1;transform:translateY(0)}
 }
 
+
+/* ===== V9 NAV / MONETIZATION ===== */
+.bottom-nav{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);width:min(560px,calc(100% - 26px));display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:7px;background:rgba(15,15,21,.94);border:1px solid #292930;border-radius:18px;backdrop-filter:blur(12px);z-index:40;box-shadow:0 10px 35px rgba(0,0,0,.35)}
+.nav-btn{border:0;background:transparent;color:#888895;border-radius:13px;padding:9px 6px;font-size:12px;font-weight:900;transition:background .22s ease,color .22s ease,transform .22s ease}.nav-btn.active{background:#1a1429;color:#fff;transform:translateY(-1px)}.nav-btn:hover{color:#fff}.nav-icon{display:block;font-size:18px;margin-bottom:3px}
+.app{padding-bottom:92px}
+.monet-card{background:linear-gradient(145deg,#15111f,#0f0f14);border:1px solid #3d2b59;border-radius:18px;padding:20px;margin-top:16px}.credits{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid #292930}.credits-num{font-size:25px;font-weight:950}.mini{font-size:12px;color:#9696a3;line-height:1.45}.reward-btn{margin-top:14px}
+#rewardModal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:20px;z-index:60}#rewardModal.show{display:flex}.reward-box{width:min(430px,100%);background:#111115;border:1px solid #3d2b59;border-radius:22px;padding:24px;text-align:center;box-shadow:0 20px 70px rgba(0,0,0,.55)}.reward-ad{height:180px;border-radius:16px;background:#08080b;border:1px solid #272733;display:grid;place-items:center;color:#555560;font-weight:900;margin:18px 0}
+
+/* ===== LANGUAGE SWITCH ===== */
+.lang-switch{position:fixed;top:12px;right:14px;z-index:80;display:flex;align-items:center;gap:2px;padding:3px;background:rgba(15,15,21,.94);border:1px solid #292930;border-radius:12px;backdrop-filter:blur(12px);box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.lang-btn{border:0;background:transparent;color:#777782;border-radius:9px;padding:6px 9px;font-size:11px;font-weight:900;letter-spacing:.6px}.lang-btn.active{background:#1a1429;color:#fff}.screen .top{padding-right:82px}
 </style>
 </head>
 <body>
+<div class="lang-switch" aria-label="Language"><button class="lang-btn active" id="langRu" onclick="setLanguage('ru')">RU</button><button class="lang-btn" id="langEn" onclick="setLanguage('en')">EN</button></div>
 <main class="app">
 
 <section id="home" class="screen active">
-<div class="top"><div class="brand">СЦЕНА</div><div class="muted">MVP</div></div>
+<div class="top"><div class="brand">СЦЕНА</div><div class="muted" id="homeMvp">MVP</div></div>
 <div class="hero">
 <div class="logo">СЦЕНА</div>
-<h1>Обычная ситуация.<br>Необычные люди.</h1>
-<p class="sub">Один телефон на компанию. Каждый получает секретную роль, затем все вместе разыгрывают сцену и пытаются выполнить свою цель.</p>
+<h1 id="homeTitle">Обычная ситуация.<br>Необычные люди.</h1>
+<p class="sub" id="homeSub">Один телефон на компанию. Каждый получает секретную роль, затем все вместе разыгрывают сцену и пытаются выполнить свою цель.</p>
 <div class="actions">
-<button class="btn" onclick="goSetup()">Начать игру</button>
-<button class="btn secondary" onclick="show('rules')">Как играть</button>
+<button class="btn" id="homeStart" onclick="goSetup()">Начать игру</button>
+<button class="btn secondary" id="homeRules" onclick="show('rules')">Как играть</button>
 </div>
 </div>
 </section>
 
 <section id="rules" class="screen">
-<div class="top"><button class="back" onclick="show('home')">← Назад</button><div class="brand">ПРАВИЛА</div></div>
-<h2>Как это работает</h2>
-<div class="card"><h3>1. Один телефон</h3><p>Телефон физически передаётся от игрока к игроку. Никто не смотрит чужую карточку.</p></div>
-<div class="card"><h3>2. Секретные цели</h3><p>Игрок читает свою роль и цель, запоминает их и передаёт телефон следующему.</p></div>
-<div class="card"><h3>3. Одна общая сцена</h3><p>Все играют одновременно. Во время сцены происходят неожиданные события.</p></div>
-<div class="card"><h3>4. Голосование</h3><p>После сцены каждый выбирает игрока, который лучше всего отыграл роль.</p></div>
-<div class="footer"><button class="btn" onclick="goSetup()">Понятно, играть</button></div>
+<div class="top"><button class="back" id="rulesBack" onclick="show('home')">← Назад</button><div class="brand" id="rulesTitle">ПРАВИЛА</div></div>
+<h2 id="rulesH2">Как играть</h2>
+<div class="card"><h3 id="rules1">1. Один телефон</h3><p id="rules1p">Телефон физически передаётся от игрока к игроку. Каждый смотрит только свою карточку и никому её не показывает.</p></div>
+<div class="card"><h3 id="rules2">2. Запомни персонажа</h3><p id="rules2p">Ты получаешь <strong>роль, цель и характер</strong>. Твоя задача — не просто выполнить цель, а <strong>отыгрывать своего персонажа</strong> во время всей сцены.</p></div>
+<div class="card" style="border-color:#4b3670;background:#14101c"><h3 id="rulesMain">🎭 Главное правило</h3><p id="rulesMainp"><strong>Ты не выполняешь задание — ты играешь персонажа, которому нужно выполнить задание.</strong></p></div>
+<div class="card"><h3 id="rules3">3. Начинается сцена</h3><p id="rules3p">Когда все получили роли, положите телефон на стол. Все начинают играть одновременно, разговаривать, действовать и реагировать на происходящее.</p></div>
+<div class="card"><h3 id="rules4">4. События меняют ситуацию</h3><p id="rules4p">По ходу игры появляются неожиданные события. Не останавливайте сцену — продолжайте отыгрыш и вписывайте событие в происходящее.</p></div>
+<div class="card"><h3 id="rules5">5. Голосование</h3><p id="rules5p">После окончания времени каждый выбирает игрока, который лучше всего отыграл свою роль.</p></div>
+<div class="footer"><button class="btn" id="rulesPlay" onclick="goSetup()">Понятно, играть</button></div>
+</section>
+
+<section id="more" class="screen">
+<div class="top"><button class="back" id="moreBack" onclick="show('home')">← Назад</button><div class="brand" id="moreTitle">СЦЕНА+</div></div>
+<h2 id="moreH2">Больше игр</h2><p id="moreSub">Здесь потом появятся реклама, магазин сцен и СЦЕНА+.</p>
+<div class="monet-card"><div class="credits"><div><strong id="moreAvailable">Доступные игры</strong><div class="mini" id="moreMini">5 стартовых + игры за просмотр рекламы</div></div><div class="credits-num" id="gameCredits">5</div></div><button class="btn reward-btn" id="moreReward" onclick="openReward()">📺 Посмотреть рекламу → +5 игр</button></div>
+<div class="monet-card"><h3 style="margin-top:0" id="morePro">⭐ СЦЕНА+</h3><p class="mini" id="moreProsub">В будущем: все сцены, без рекламы и дополнительные режимы.</p><button class="btn secondary" id="moreDetails" onclick="alert(language==='en'?'SCENE+ is still in development':'СЦЕНА+ пока в разработке')">Подробнее</button></div>
 </section>
 
 <section id="setup" class="screen">
-<div class="top"><button class="back" onclick="show('home')">← Назад</button><div class="brand">НАСТРОЙКА</div></div>
-<h2>Собираем игру</h2><p>Минимум 3 игрока. Телефон один.</p><div id="difficultyHint" class="card" style="padding:14px 16px;border-color:#342a48;background:#100d16"></div>
+<div class="top"><button class="back" id="setupBack" onclick="show('home')">← Назад</button><div class="brand" id="setupTitle">НАСТРОЙКА</div></div>
+<h2 id="setupH2">Собираем игру</h2><p id="setupSub">Минимум 3 игрока. Телефон один.</p><div id="difficultyHint" class="card" style="padding:14px 16px;border-color:#342a48;background:#100d16"></div>
 <div class="card">
-<div class="number-row"><div><h3>Игроки</h3><p style="margin:0">Сколько человек играет?</p></div>
+<div class="number-row"><div><h3 id="setupPlayers">Игроки</h3><p style="margin:0" id="setupPlayersSub">Сколько человек играет?</p></div>
 <div class="stepper"><button onclick="changePlayers(-1)">−</button><div id="playerCount" class="count">4</div><button onclick="changePlayers(1)">+</button></div>
 </div></div>
-<div class="card"><h3>Ситуация <span class="muted" style="font-size:12px;font-weight:700">9 вариантов</span></h3><div id="sceneChoices" class="choice-grid"></div></div>
-<div class="card"><h3>Сложность</h3><div id="difficultyChoices" class="choice-grid"></div></div>
-<div class="card"><h3>Длительность</h3><div id="durationChoices" class="choice-grid"></div></div>
-<div class="footer"><button class="btn" onclick="startPass()">Раздать секретные роли</button></div>
+<div class="card"><h3 id="setupScene">Ситуация <span class="muted" style="font-size:12px;font-weight:700" id="setupVariants">9 вариантов</span></h3><div id="sceneChoices" class="choice-grid"></div></div>
+<div class="card"><h3 id="setupDifficulty">Сложность</h3><div id="difficultyChoices" class="choice-grid"></div></div>
+<div class="card"><h3 id="setupDuration">Длительность</h3><div id="durationChoices" class="choice-grid"></div></div>
+<div class="footer"><button class="btn" id="setupDeal" onclick="startPass()">Раздать секретные роли</button></div>
 </section>
 
 <section id="pass" class="screen">
@@ -348,51 +369,57 @@ body:before{
 <div class="pass-icon">●</div>
 <h2 id="coverTitle">Игрок 1</h2>
 <p id="coverText">Телефон у тебя.<br><strong style="color:#f5f5f5">Убедись, что никто не смотрит.</strong></p>
-<div style="height:180px;background:#050507;border:1px solid #16161b;border-radius:20px;margin:22px 0;display:flex;align-items:center;justify-content:center;color:#33333b;font-weight:800;letter-spacing:1px">СЕКРЕТНО</div>
-<button class="btn" onclick="revealRole()">Показать мою роль</button>
+<div style="height:180px;background:#050507;border:1px solid #16161b;border-radius:20px;margin:22px 0;display:flex;align-items:center;justify-content:center;color:#33333b;font-weight:800;letter-spacing:1px" id="passSecret">СЕКРЕТНО</div>
+<button class="btn" id="passShow" onclick="revealRole()">Показать мою роль</button>
 </div>
 
 <div id="passRole" class="pass" style="display:none;width:100%">
 <div class="pass-icon">🎭</div>
 <h2 id="roleTitle">Игрок 1</h2>
-<p>Теперь можно посмотреть только тебе.</p>
+<p id="roleOnly">Теперь можно посмотреть только тебе.</p>
 <div class="role-card">
 <div id="roleIcon" class="role-icon">🎭</div>
 <div id="roleName" class="role-name">Роль</div>
 <div id="roleDetails"></div>
 </div>
 <p id="passWarning" class="warning">Запомни карточку. Нажми кнопку — экран снова станет чёрным, и можно будет передать телефон дальше.</p>
-<button class="btn" onclick="hideRoleAndPass()">Запомнил → скрыть и передать</button>
+<button class="btn" id="passHide" onclick="hideRoleAndPass()">Запомнил → скрыть и передать</button>
 </div>
 </div>
 </section>
 
 <section id="game" class="screen">
-<div class="top"><button class="back" onclick="quitGame()">← Выйти</button><div class="brand">СЦЕНА</div></div>
-<div class="game-head"><div><div class="muted">Ситуация</div><h2 id="gameScene" style="margin:4px 0 0">Сцена</h2></div><div><div id="timer" class="timer">03:00</div><div id="timerBar" style="height:3px;width:100%;background:#272733;border-radius:9px;margin-top:7px;overflow:hidden"><div id="timerFill" style="height:100%;width:100%;background:#7c3cff;border-radius:9px;transition:width .9s linear"></div></div></div></div>
-<div class="scene-box"><div class="muted">Правило</div><h3 id="gamePrompt" style="margin:7px 0 0">Отыгрывайте ситуацию.</h3></div>
-<div id="eventBox" class="event"><div class="event-title">Случайное событие</div><div id="eventText" class="event-empty">Пока ничего не произошло.</div></div>
+<div class="top"><button class="back" id="gameBack" onclick="quitGame()">← Выйти</button><div class="brand">СЦЕНА</div></div>
+<div class="game-head"><div><div class="muted" id="gameSituation">Ситуация</div><h2 id="gameScene" style="margin:4px 0 0">Сцена</h2></div><div><div id="timer" class="timer">03:00</div><div id="timerBar" style="height:3px;width:100%;background:#272733;border-radius:9px;margin-top:7px;overflow:hidden"><div id="timerFill" style="height:100%;width:100%;background:#7c3cff;border-radius:9px;transition:width .9s linear"></div></div></div></div>
+<div class="scene-box"><div class="muted" id="gameRule">Правило</div><h3 id="gamePrompt" style="margin:7px 0 0">Отыгрывайте ситуацию.</h3></div>
+<div id="eventBox" class="event"><div class="event-title" id="gameEvent">Случайное событие</div><div id="eventText" class="event-empty">Пока ничего не произошло.</div></div>
 <div class="actions">
-<button class="btn" onclick="triggerEvent()">Случайное событие</button>
-<button class="btn secondary" onclick="finishGame()">Закончить сцену</button>
+<button class="btn" id="gameTrigger" onclick="triggerEvent()">Случайное событие</button>
+<button class="btn secondary" id="gameFinish" onclick="finishGame()">Закончить сцену</button>
 </div>
 </section>
 
 <section id="voting" class="screen">
-<div class="top"><div class="brand">ГОЛОСОВАНИЕ</div><div class="muted">1 голос</div></div>
-<h2>Кто отыграл лучше?</h2><p>Выбери одного игрока.</p>
+<div class="top"><div class="brand" id="voteTitle">ГОЛОСОВАНИЕ</div><div class="muted" id="voteOne">1 голос</div></div>
+<h2 id="voteH2">Кто отыграл лучше?</h2><p id="voteSub">Выбери одного игрока.</p>
 <div id="voteList" class="vote-list"></div>
 <div class="footer"><button id="voteConfirm" class="btn" disabled onclick="finishVoting()">Подтвердить голос</button></div>
 </section>
 
 <section id="results" class="screen">
-<div class="top"><div class="brand">РЕЗУЛЬТАТЫ</div><div class="muted">Раунд завершён</div></div>
-<div style="text-align:center;margin:15px 0 25px"><div style="font-size:54px">🏆</div><h2 style="margin-top:9px">Раунд завершён</h2><p>Лучший игрок получает голос.</p></div>
+<div class="top"><div class="brand" id="resultsTitle">РЕЗУЛЬТАТЫ</div><div class="muted" id="resultsDone">Раунд завершён</div></div>
+<div style="text-align:center;margin:15px 0 25px"><div style="font-size:54px">🏆</div><h2 id="resultsH2" style="margin-top:9px">Раунд завершён</h2><p id="resultsSub">Лучший игрок получает голос.</p></div>
 <div id="resultList" class="card"></div>
-<div class="actions"><button class="btn" onclick="goSetup()">Новый раунд</button><button class="btn secondary" onclick="show('home')">В главное меню</button></div>
+<div class="actions"><button class="btn" id="resultsNew" onclick="goSetup()">Новый раунд</button><button class="btn secondary" id="resultsHome" onclick="show('home')">В главное меню</button></div>
 </section>
 
 </main>
+<nav class="bottom-nav" aria-label="Навигация">
+<button class="nav-btn active" data-nav="home" onclick="show('home')"><span class="nav-icon">🎭</span>Играть</button>
+<button class="nav-btn" data-nav="rules" onclick="show('rules')"><span class="nav-icon">📖</span>Правила</button>
+<button class="nav-btn" data-nav="more" onclick="show('more')"><span class="nav-icon">⭐</span>СЦЕНА+</button>
+</nav>
+<div id="rewardModal"><div class="reward-box"><div class="muted" id="rewardAd">РЕКЛАМА</div><h2 id="rewardH2">Получить +5 игр</h2><p class="mini" id="rewardP">В настоящем приложении здесь будет рекламный ролик. В прототипе награда выдаётся сразу.</p><div class="reward-ad" id="rewardVideo">РЕКЛАМНЫЙ РОЛИК</div><button class="btn" id="rewardGet" onclick="claimReward()">Получить +5 игр</button><button class="btn secondary" id="rewardCancel" style="margin-top:9px" onclick="closeReward()">Отмена</button></div></div>
 <div id="error"></div>
 
 <script>
@@ -500,19 +527,139 @@ train:["Объявляют новую остановку или изменени
 wedding:["Ведущий объявляет незапланированную паузу.","Нужно срочно решить, кто участвует в следующем моменте.","Появляется неожиданный гость.","Организатор сообщает об изменении программы."]
 };
 
-const state={players:4,scene:"store",difficulty:"normal",duration:180,pass:0,roles:[],usedEvents:[],time:180,timer:null,vote:null};
+const eventsEN={
+store:["A new customer suddenly arrives with a very strange request.","The cashier says the system is temporarily down.","One product suddenly becomes the main subject of an argument.","An inspection is announced in the store."],
+airport:["The boarding gate is suddenly changed.","A staff member asks everyone to clear the passage.","The flight is delayed for a few more minutes.","Someone claims to have important information about the departure."],
+interview:["The meeting is suddenly cut down to one minute.","The manager asks the candidates to reach an agreement.","A new position appears that nobody knew about.","The recruiter announces: the next question will decide everything."],
+restaurant:["The kitchen says one dish is temporarily unavailable.","An argument starts at the next table.","The manager asks everyone to solve the situation without conflict.","The waiter brings unexpected information."],
+hotel:["One room suddenly becomes unavailable.","The receptionist asks the guests to reach an agreement quickly.","New information about the booking appears.","The reception area suddenly gets crowded."],
+school:["The teacher says a decision has to be made right now.","A new witness appears.","The bell rings earlier than expected.","Someone claims to know the whole truth."],
+office:["There are only 30 seconds left before the deadline.","The client demands a clear answer right now.","The manager changes the task priority.","It turns out some of the data was misunderstood."],
+train:["A new stop or route change is announced.","The conductor asks everyone to clear the passage.","A passenger claims to know why the train stopped.","There is almost no time left to make a decision."],
+wedding:["The host announces an unscheduled pause.","You urgently need to decide who takes part in the next moment.","An unexpected guest appears.","The organizer announces a change to the program."]
+};
+
+const scenesEN={
+store:{title:"Store",prompt:"An ordinary store. Everyone has a hidden reason for being here.",roles:[
+["🧑‍💼","Customer","Get a refund for an item.","Make the salesperson suggest a solution on their own.","Speak confidently and never admit that you are nervous.","You cannot directly ask for a refund."],
+["🛒","Salesperson","Solve the customer's problem.","Make someone else take responsibility for the situation.","Stay polite even when pressured.","You cannot say the customer is wrong."],
+["📦","Warehouse Worker","Find out where the missing item went.","Get someone to admit they handled the item.","You are always in a hurry.","You cannot accuse anyone directly."],
+["🧾","Cashier","Keep the line moving and avoid a conflict.","Make two people agree on one solution.","You are extremely practical.","You cannot leave your place."],
+["👀","Regular Customer","Figure out what is really going on.","Convince someone to tell you an important detail.","Act as if you have seen everything before.","You cannot reveal why you are interested."]]},
+airport:{title:"Airport",prompt:"A flight is about to depart, but everyone has a different problem to solve.",roles:[
+["🧳","Passenger","Make sure you can board the flight.","Get another player to help you first.","You are worried about being late.","You cannot ask anyone directly to help you."],
+["🛂","Security Officer","Keep the area calm and organized.","Find out who is hiding important information.","Be strict but professional.","You cannot raise your voice."],
+["🎫","Traveler","Find your way to the correct gate.","Get two different people to confirm the route.","You are convinced you know the airport better than everyone.","You cannot admit that you are lost."],
+["📢","Airport Employee","Help everyone understand what is happening.","Make two people agree on a plan.","You are calm under pressure.","You cannot make up information."],
+["🧑‍✈️","Crew Member","Collect the information you need before boarding.","Get an important detail from someone.","Stay completely focused.","You cannot reveal what information you need first."]]},
+interview:{title:"Job Interview",prompt:"A company is hiring, but everyone involved has different interests.",roles:[
+["👔","Candidate","Convince the employer that you are the best choice.","Hide one obvious weakness.","Answer confidently even when the question is uncomfortable.","You cannot directly say you are better than the others."],
+["🧑‍💼","Recruiter","Choose the candidate who fits the company.","Expose at least one candidate's weakness.","Do not show who you prefer right away.","You cannot ask the same question twice."],
+["📋","Manager","Understand who can really work in a team.","Make the candidates interact with each other.","Interrupt only when necessary.","You cannot make the decision alone."],
+["💻","Company Employee","Find out whether the new person will become a problem.","Test a candidate's reaction to pressure.","You are slightly unhappy with your current job.","You cannot say directly that you want to change jobs."],
+["🎓","Strong Candidate","Make sure people remember you.","Help another candidate once.","Do not brag directly.","You cannot talk about your achievements twice in a row."]]},
+restaurant:{title:"Restaurant",prompt:"People at one table need to solve one shared problem.",roles:[
+["🍝","Guest","Get your order changed.","Convince another guest to support you.","You are absolutely sure you are right.","You cannot raise your voice."],
+["🧑‍🍳","Chef","Do not let the restaurant look responsible.","Make the guests reach an agreement.","You are very proud of your cooking.","You cannot admit a mistake immediately."],
+["🧾","Manager","Stay calm and solve the dispute.","Figure out who started the conflict.","Be extremely polite.","You cannot promise a discount."],
+["⭐","Regular Guest","Get special treatment.","Make the manager make an exception.","Act as if everyone here knows you well.","You cannot directly demand special treatment."],
+["📸","Reviewer","Decide whether the restaurant deserves a good review.","Find out what two people think.","Pretend you are an ordinary guest.","You cannot say that you are reviewing the restaurant."]]},
+hotel:{title:"Hotel",prompt:"Check-in goes wrong, and there are fewer and fewer easy solutions.",roles:[
+["🧳","Guest","Get the room that works for you.","Make the employee suggest an option first.","Be polite but persistent.","You cannot directly demand another room."],
+["🛎️","Receptionist","Settle everyone without a conflict.","Figure out which guest is hiding the real problem.","Keep a professional tone.","You cannot promise something that does not exist."],
+["🧑‍🤝‍🧑","Traveler","Convince someone to switch with you.","Make the other person initiate the idea.","You are slightly suspicious.","You cannot say the real reason."],
+["💼","Business Traveler","Get the conditions you need for work.","Find an ally among the guests.","You are constantly thinking about time.","You cannot show irritation."],
+["🧹","Hotel Employee","Convince everyone the problem can be solved right now.","Make two people agree to one plan.","You are overly confident in your abilities.","You cannot blame your colleagues."]]},
+school:{title:"School",prompt:"After an unexpected situation, several people try to understand what happened.",roles:[
+["📚","Student","Avoid an unpleasant decision.","Get another student to confirm your version.","Speak confidently.","You cannot accuse someone first."],
+["👩‍🏫","Teacher","Understand what happened and make a decision.","Find a contradiction in someone's story.","Be strict but fair.","You cannot announce a punishment immediately."],
+["🧑‍🎓","Class Representative","Help the group reach a shared decision.","Convince the teacher to hear everyone out.","You are very organized.","You cannot make the decision for everyone."],
+["📝","Witness","Tell only what you actually saw.","Make someone ask you the question you need.","You are unsure about some details.","You cannot invent new facts."],
+["🎒","New Student","Understand the rules and avoid becoming the scapegoat.","Find someone who will take your side.","You try to look calm.","You cannot say that you are afraid of making a mistake."]]},
+office:{title:"Office",prompt:"A team finds a problem just before an important deadline, and nobody wants the blame.",roles:[
+["💻","Manager","Solve the problem before the deadline.","Make another person voluntarily take one task.","You are sure you control the situation.","You cannot directly blame a colleague."],
+["📊","Analyst","Find where the mistake appeared.","Get two people to give you different versions of events.","Speak only in facts.","You cannot show all your data immediately."],
+["🧑‍💼","Boss","Understand who will fix the problem and how.","Make the team agree on a plan.","You hate excuses.","You cannot do someone else's task yourself."],
+["🗂️","Employee","Avoid extra work while still looking useful.","Redirect one task to another person.","You are extremely busy.","You cannot directly refuse to help."],
+["📞","Client","Get a clear answer from the team.","Make the employees give a specific deadline.","You are starting to lose patience.","You cannot threaten to leave."]]},
+train:{title:"Train",prompt:"The train is stopped longer than usual, and passengers try to figure out what happens next.",roles:[
+["🎫","Passenger","Find out when and how the trip will continue.","Get specific information from an employee.","You are in a huge hurry.","You cannot simply walk away from the situation."],
+["🚉","Conductor","Keep order in the carriage.","Convince everyone to follow one plan.","You stay calm in any situation.","You cannot promise an exact time without information."],
+["🧳","Late Traveler","Regain control of your trip.","Find someone who can help you.","You are hiding why you were late.","You cannot tell the whole story first."],
+["📱","Caller","Have an important conversation despite the situation.","Make another player create the conditions you need.","Pretend everything is fine.","You cannot raise your voice."],
+["🗺️","Tourist","Figure out where you are and where to go next.","Get two different versions of the route.","You are sure you know the way.","You cannot admit that you are lost."]]},
+wedding:{title:"Party",prompt:"A big celebration is not going according to plan, and guests try to keep the mood positive.",roles:[
+["🎤","Host","Do not let the party fall apart.","Make two guests take part in one decision.","You always speak with confidence.","You cannot announce the problem directly."],
+["🎁","Guest","Make sure people pay attention to you.","Convince another guest to help you.","You are very outgoing.","You cannot directly ask for attention."],
+["📸","Photographer","Get the perfect moment for a photo.","Gather at least two people around you.","You are always looking for a great shot.","You cannot explain why you need someone."],
+["🍰","Organizer","Solve an unexpected problem with the program.","Make the host change the plan.","You are a little nervous.","You cannot show panic."],
+["🥳","Best Friend","Support the main person of the evening.","Do not let one conflict ruin the mood.","You are too optimistic.","You cannot agree with a negative scenario."]]}
+};
+
+const state={players:4,scene:"store",difficulty:"normal",duration:180,pass:0,roles:[],usedEvents:[],time:180,timer:null,vote:null,credits:Number(localStorage.getItem("scena_credits")||5),gamesPlayed:Number(localStorage.getItem("scena_games_played")||0)};
 
 function $(id){return document.getElementById(id)}
 
 let currentScreen="home";
 let navigating=false;
+let language=localStorage.getItem("scena_language")||"ru";
+
+const UI={
+ru:{
+"home.mvp":"MVP","home.title":"Обычная ситуация.<br>Необычные люди.","home.sub":"Один телефон на компанию. Каждый получает секретную роль, затем все вместе разыгрывают сцену и пытаются выполнить свою цель.","home.start":"Начать игру","home.rules":"Как играть",
+"rules.back":"← Назад","rules.title":"ПРАВИЛА","rules.h2":"Как играть","rules.1":"Один телефон","rules.1p":"Телефон физически передаётся от игрока к игроку. Каждый смотрит только свою карточку и никому её не показывает.","rules.2":"Запомни персонажа","rules.2p":"Ты получаешь <strong>роль, цель и характер</strong>. Твоя задача — не просто выполнить цель, а <strong>отыгрывать своего персонажа</strong> во время всей сцены.","rules.main":"🎭 Главное правило","rules.mainp":"<strong>Ты не выполняешь задание — ты играешь персонажа, которому нужно выполнить задание.</strong>","rules.3":"Начинается сцена","rules.3p":"Когда все получили роли, положите телефон на стол. Все начинают играть одновременно, разговаривать, действовать и реагировать на происходящее.","rules.4":"События меняют ситуацию","rules.4p":"По ходу игры появляются неожиданные события. Не останавливайте сцену — продолжайте отыгрыш и вписывайте событие в происходящее.","rules.5":"Голосование","rules.5p":"После окончания времени каждый выбирает игрока, который лучше всего отыграл свою роль.","rules.play":"Понятно, играть",
+"more.back":"← Назад","more.title":"СЦЕНА+","more.h2":"Больше игр","more.sub":"Здесь потом появятся реклама, магазин сцен и СЦЕНА+.","more.available":"Доступные игры","more.mini":"5 стартовых + игры за просмотр рекламы","more.reward":"📺 Посмотреть рекламу → +5 игр","more.pro":"⭐ СЦЕНА+","more.prosub":"В будущем: все сцены, без рекламы и дополнительные режимы.","more.details":"Подробнее",
+"setup.back":"← Назад","setup.title":"НАСТРОЙКА","setup.h2":"Собираем игру","setup.sub":"Минимум 3 игрока. Телефон один.","setup.players":"Игроки","setup.playersSub":"Сколько человек играет?","setup.scene":"Ситуация","setup.variants":"9 вариантов","setup.difficulty":"Сложность","setup.duration":"Длительность","setup.deal":"Раздать секретные роли",
+"pass.secret":"СЕКРЕТНО","pass.show":"Показать мою роль","pass.only":"Теперь можно посмотреть только тебе.","pass.hide":"Запомнил → скрыть и передать","pass.cover":"Телефон уже у тебя.<br>Убедись, что никто не смотрит.","pass.main":"Главная цель","pass.character":"Характер","pass.secretGoal":"Секретная цель","pass.restriction":"Ограничение",
+"game.back":"← Выйти","game.situation":"Ситуация","game.rule":"Правило","game.defaultRule":"Отыгрывайте ситуацию.","game.empty":"Пока ничего не произошло.","game.event":"Случайное событие","game.trigger":"Случайное событие","game.finish":"Закончить сцену",
+"vote.title":"ГОЛОСОВАНИЕ","vote.one":"1 голос","vote.h2":"Кто отыграл лучше?","vote.sub":"Выбери одного игрока.","vote.confirm":"Подтвердить голос",
+"results.title":"РЕЗУЛЬТАТЫ","results.done":"Раунд завершён","results.h2":"Раунд завершён","results.sub":"Лучший игрок получает голос.","results.new":"Новый раунд","results.home":"В главное меню",
+"reward.ad":"РЕКЛАМА","reward.h2":"Получить +5 игр","reward.p":"В настоящем приложении здесь будет рекламный ролик. В прототипе награда выдаётся сразу.","reward.video":"РЕКЛАМНЫЙ РОЛИК","reward.get":"Получить +5 игр","reward.cancel":"Отмена"},
+en:{
+"home.mvp":"MVP","home.title":"An ordinary situation.<br>Extraordinary people.","home.sub":"One phone for the whole group. Everyone gets a secret role, then you act out the scene together and try to complete your goal.","home.start":"Start game","home.rules":"How to play",
+"rules.back":"← Back","rules.title":"RULES","rules.h2":"How to play","rules.1":"One phone","rules.1p":"Pass the phone from player to player. Each person only looks at their own card and never shows it to anyone else.","rules.2":"Remember your character","rules.2p":"You get a <strong>role, goal and personality</strong>. Your job is not just to complete the goal — you must <strong>act as your character</strong> throughout the whole scene.","rules.main":"🎭 The main rule","rules.mainp":"<strong>You are not completing a task — you are playing a character who needs to complete a task.</strong>","rules.3":"The scene begins","rules.3p":"Once everyone has received a role, put the phone on the table. Everyone starts playing at the same time: talking, acting and reacting to what happens.","rules.4":"Events change the situation","rules.4p":"Unexpected events appear during the game. Do not stop the scene — keep acting and work the event into what is happening.","rules.5":"Vote","rules.5p":"When time is up, everyone chooses the player who acted their role the best.","rules.play":"Got it, play",
+"more.back":"← Back","more.title":"SCENE+","more.h2":"More games","more.sub":"Ads, a scene store and SCENE+ will appear here later.","more.available":"Available games","more.mini":"5 starter games + games for watching ads","more.reward":"📺 Watch ad → +5 games","more.pro":"⭐ SCENE+","more.prosub":"Coming later: all scenes, no ads and extra modes.","more.details":"Details",
+"setup.back":"← Back","setup.title":"SETUP","setup.h2":"Build your game","setup.sub":"Minimum 3 players. One phone.","setup.players":"Players","setup.playersSub":"How many people are playing?","setup.scene":"Scene","setup.variants":"9 options","setup.difficulty":"Difficulty","setup.duration":"Duration","setup.deal":"Deal secret roles",
+"pass.secret":"SECRET","pass.show":"Reveal my role","pass.only":"Only you should look now.","pass.hide":"Remember → hide and pass","pass.cover":"The phone is yours.<br><strong>Make sure nobody is looking.</strong>","pass.main":"Main goal","pass.character":"Personality","pass.secretGoal":"Secret goal","pass.restriction":"Restriction",
+"game.back":"← Exit","game.situation":"Situation","game.rule":"Rule","game.defaultRule":"Act out the situation.","game.empty":"Nothing has happened yet.","game.event":"Random event","game.trigger":"Random event","game.finish":"End scene",
+"vote.title":"VOTING","vote.one":"1 vote","vote.h2":"Who acted best?","vote.sub":"Choose one player.","vote.confirm":"Confirm vote",
+"results.title":"RESULTS","results.done":"Round complete","results.h2":"Round complete","results.sub":"The best player gets the vote.","results.new":"New round","results.home":"Main menu",
+"reward.ad":"ADVERTISEMENT","reward.h2":"Get +5 games","reward.p":"In the real app, a video ad will play here. In this prototype, the reward is granted instantly.","reward.video":"AD VIDEO","reward.get":"Get +5 games","reward.cancel":"Cancel"}
+};
+
+function txt(k){return UI[language][k]||UI.ru[k]||k}
+function contentScene(){return language==='en'?scenesEN[state.scene]:scenes.find(function(x){return x.id===state.scene})}
+function contentRole(index){return language==='en'?scenesEN[state.scene].roles[index]:state.roles[index]}
+function contentEvent(id,text){if(language==='en'){const idx=(events[id]||[]).indexOf(text); return (eventsEN[id]||[])[idx]||text}return text}
+
+window.setLanguage=function(lang){language=lang;localStorage.setItem("scena_language",lang);document.documentElement.lang=lang;applyLanguage();renderChoices();renderPass();if($("gameScene")&&currentScreen==='game')startGameTextOnly();updateCredits();syncNav(currentScreen);};
+
+function applyLanguage(){
+$("langRu").classList.toggle("active",language==='ru');$("langEn").classList.toggle("active",language==='en');
+const map={"homeMvp":"home.mvp","homeTitle":"home.title","homeSub":"home.sub","homeStart":"home.start","homeRules":"home.rules","rulesBack":"rules.back","rulesTitle":"rules.title","rulesH2":"rules.h2","rules1":"rules.1","rules1p":"rules.1p","rules2":"rules.2","rules2p":"rules.2p","rulesMain":"rules.main","rulesMainp":"rules.mainp","rules3":"rules.3","rules3p":"rules.3p","rules4":"rules.4","rules4p":"rules.4p","rules5":"rules.5","rules5p":"rules.5p","rulesPlay":"rules.play","moreBack":"more.back","moreTitle":"more.title","moreH2":"more.h2","moreSub":"more.sub","moreAvailable":"more.available","moreMini":"more.mini","moreReward":"more.reward","morePro":"more.pro","moreProsub":"more.prosub","moreDetails":"more.details","setupBack":"setup.back","setupTitle":"setup.title","setupH2":"setup.h2","setupSub":"setup.sub","setupPlayers":"setup.players","setupPlayersSub":"setup.playersSub","setupScene":"setup.scene","setupVariants":"setup.variants","setupDifficulty":"setup.difficulty","setupDuration":"setup.duration","setupDeal":"setup.deal","coverText":"pass.cover","passShow":"pass.show","roleOnly":"pass.only","passHide":"pass.hide","gameBack":"game.back","gameSituation":"game.situation","gameRule":"game.rule","gameTrigger":"game.trigger","gameFinish":"game.finish","voteTitle":"vote.title","voteOne":"vote.one","voteH2":"vote.h2","voteSub":"vote.sub","voteConfirm":"vote.confirm","resultsTitle":"results.title","resultsDone":"results.done","resultsH2":"results.h2","resultsSub":"results.sub","resultsNew":"results.new","resultsHome":"results.home","rewardAd":"reward.ad","rewardH2":"reward.h2","rewardP":"reward.p","rewardVideo":"reward.video","rewardGet":"reward.get","rewardCancel":"reward.cancel"};
+Object.keys(map).forEach(function(id){const el=$(id);if(el)el.innerHTML=txt(map[id]);});
+$("passSecret").textContent=txt("pass.secret");
+const nav=document.querySelectorAll(".nav-btn");
+if(nav[0])nav[0].innerHTML='<span class="nav-icon">🎭</span>'+(language==='en'?"Play":"Играть");
+if(nav[1])nav[1].innerHTML='<span class="nav-icon">📖</span>'+(language==='en'?"Rules":"Правила");
+if(nav[2])nav[2].innerHTML='<span class="nav-icon">⭐</span>SCENE+';
+}
+
+
+function syncNav(id){
+  const activeMap={home:"home",rules:"rules",setup:"home",pass:"home",game:"home",voting:"home",results:"home",more:"more"};
+  const active=activeMap[id]||null;
+  document.querySelectorAll(".nav-btn").forEach(function(btn){
+    btn.classList.toggle("active", btn.dataset.nav===active);
+  });
+}
 
 window.show=function(id){
 const next=$(id);
 const current=$(currentScreen);
 if(!next || next===current || navigating)return;
 
-const order=["home","rules","setup","pass","game","voting","results"];
+const order=["home","rules","setup","pass","game","voting","results","more"];
 const forward=order.indexOf(id)>=order.indexOf(currentScreen);
 navigating=true;
 
@@ -546,6 +693,7 @@ current.style.opacity="";
 next.style.transform="";
 next.style.opacity="";
 currentScreen=id;
+syncNav(id);
 navigating=false;
 window.scrollTo(0,0);
 },360);
@@ -555,29 +703,24 @@ window.scrollTo(0,0);
 
 window.goSetup=function(){stopTimer();renderChoices();show("setup")};
 
+function updateCredits(){const el=$("gameCredits");if(el)el.textContent=state.credits;localStorage.setItem("scena_credits",state.credits);localStorage.setItem("scena_games_played",state.gamesPlayed)}
+window.openReward=function(){$("rewardModal").classList.add("show")};
+window.closeReward=function(){$("rewardModal").classList.remove("show")};
+window.claimReward=function(){state.credits+=5;updateCredits();closeReward();alert(language==='en'?"Done! +5 games added.":"Готово! +5 игр добавлено.")};
+
 window.changePlayers=function(delta){
 state.players=Math.max(3,Math.min(8,state.players+delta));
 $("playerCount").textContent=state.players;
 };
 
 function renderChoices(){
-$("sceneChoices").innerHTML=scenes.map(function(s){
-return '<button class="choice '+(state.scene===s.id?"active":"")+'" onclick="selectScene(\''+s.id+'\')"><strong>'+s.icon+" "+s.title+'</strong><small>'+s.prompt+'</small></button>';
-}).join("");
-
-$("difficultyChoices").innerHTML=difficulties.map(function(d){
-return '<button class="choice '+(state.difficulty===d.id?"active":"")+'" onclick="selectDifficulty(\''+d.id+'\')"><strong>'+d.title+'</strong><small>'+d.text+'</small></button>';
-}).join("");
-
-$("durationChoices").innerHTML=durations.map(function(d){
-return '<button class="choice '+(state.duration===d.id?"active":"")+'" onclick="selectDuration('+d.id+')"><strong>'+d.title+'</strong><small>'+d.text+'</small></button>';
-}).join("");
-
-const hints={
-easy:"🟢 <strong>Легко</strong> — только главная цель и характер. Быстро входишь в игру.",
-normal:"🟡 <strong>Нормально</strong> — добавляется секретная цель, которую нельзя раскрыть.",
-hard:"🔴 <strong>Жёстко</strong> — секретная цель плюс ограничение, которое мешает выполнить её."
-};
+const list=language==='en'?Object.keys(scenesEN).map(id=>({id:id,icon:scenes.find(function(x){return x.id===id}).icon,title:scenesEN[id].title,prompt:scenesEN[id].prompt})):scenes;
+$("sceneChoices").innerHTML=list.map(function(s){return '<button class="choice '+(state.scene===s.id?"active":"")+'" onclick="selectScene(\''+s.id+'\')"><strong>'+s.icon+" "+s.title+'</strong><small>'+s.prompt+'</small></button>';}).join("");
+const diff=language==='en'?[{id:"easy",title:"Easy",text:"Role + goal + personality"},{id:"normal",title:"Normal",text:"Adds a secret goal"},{id:"hard",title:"Hard",text:"Secret goal + restriction"}]:difficulties;
+$("difficultyChoices").innerHTML=diff.map(function(d){return '<button class="choice '+(state.difficulty===d.id?"active":"")+'" onclick="selectDifficulty(\''+d.id+'\')"><strong>'+d.title+'</strong><small>'+d.text+'</small></button>';}).join("");
+const dur=language==='en'?[{id:120,title:"2 minutes",text:"Quick round"},{id:180,title:"3 minutes",text:"Recommended"},{id:300,title:"5 minutes",text:"More improvisation"}]:durations;
+$("durationChoices").innerHTML=dur.map(function(d){return '<button class="choice '+(state.duration===d.id?"active":"")+'" onclick="selectDuration('+d.id+')"><strong>'+d.title+'</strong><small>'+d.text+'</small></button>';}).join("");
+const hints=language==='en'?{easy:"🟢 <strong>Easy</strong> — just your main goal and personality. Easy to jump into.",normal:"🟡 <strong>Normal</strong> — adds a secret goal you must keep hidden.",hard:"🔴 <strong>Hard</strong> — secret goal plus a restriction that gets in your way."}:{easy:"🟢 <strong>Легко</strong> — только главная цель и характер. Быстро входишь в игру.",normal:"🟡 <strong>Нормально</strong> — добавляется секретная цель, которую нельзя раскрыть.",hard:"🔴 <strong>Жёстко</strong> — секретная цель плюс ограничение, которое мешает выполнить её."};
 $("difficultyHint").innerHTML=hints[state.difficulty];
 }
 
@@ -602,43 +745,26 @@ state.roles=out;
 }
 
 window.startPass=function(){
+if(state.credits<=0){show("more");openReward();return;}
+state.credits--;state.gamesPlayed++;updateCredits();
 makeRoles();state.pass=0;renderPass();show("pass");
 };
 
 function renderPass(){
-const r=state.roles[state.pass];
-const player="Игрок "+(state.pass+1);
-
+if(!state.roles.length){applyLanguage();return;}
+const r=contentRole(state.pass);
+const player=(language==='en'?"Player ":"Игрок ")+(state.pass+1);
 $("passProgress").textContent=(state.pass+1)+" / "+state.players;
 $("coverTitle").textContent=player;
-$("coverText").innerHTML="Телефон уже у тебя.<br>Убедись, что никто не смотрит.";
+$("coverText").innerHTML=txt("pass.cover");
 $("roleTitle").textContent=player;
-
-const passHints={
-easy:"У тебя только основная цель и характер.",
-normal:"У тебя есть секретная цель. Не дай её понять другим.",
-hard:"У тебя есть секретная цель и ограничение. Используй их незаметно."
-};
-$("passWarning").textContent=passHints[state.difficulty]+" После этого экран снова станет чёрным.";
-
-$("roleIcon").textContent=r[0];
-$("roleName").textContent=r[1];
-
-let details='<div class="secret-row"><div class="label">Главная цель</div><div class="secret-value">'+r[2]+'</div></div>'+
-'<div class="secret-row"><div class="label">Характер</div><div class="secret-value">'+r[4]+'</div></div>';
-
-if(state.difficulty==="normal" || state.difficulty==="hard"){
-details+='<div class="secret-row"><div class="label">Секретная цель</div><div class="secret-value">'+r[3]+'</div></div>';
-}
-
-if(state.difficulty==="hard"){
-details+='<div class="secret-row"><div class="label">Ограничение</div><div class="secret-value">'+r[5]+'</div></div>';
-}
-
-$("roleDetails").innerHTML=details;
-
-$("passCover").style.display="flex";
-$("passRole").style.display="none";
+const passHints=language==='en'?{easy:"You only have a main goal and personality.",normal:"You have a secret goal. Do not let others figure it out.",hard:"You have a secret goal and a restriction. Use them without making it obvious."}:{easy:"У тебя только основная цель и характер.",normal:"У тебя есть секретная цель. Не дай её понять другим.",hard:"У тебя есть секретная цель и ограничение. Используй их незаметно."};
+$("passWarning").textContent=passHints[state.difficulty]+(language==='en'?" After this, the screen turns black again.":" После этого экран снова станет чёрным.");
+$("roleIcon").textContent=r[0];$("roleName").textContent=r[1];
+let details='<div class="secret-row"><div class="label">'+txt("pass.main")+'</div><div class="secret-value">'+r[2]+'</div></div>'+'<div class="secret-row"><div class="label">'+txt("pass.character")+'</div><div class="secret-value">'+r[4]+'</div></div>';
+if(state.difficulty==="normal"||state.difficulty==="hard")details+='<div class="secret-row"><div class="label">'+txt("pass.secretGoal")+'</div><div class="secret-value">'+r[3]+'</div></div>';
+if(state.difficulty==="hard")details+='<div class="secret-row"><div class="label">'+txt("pass.restriction")+'</div><div class="secret-value">'+r[5]+'</div></div>';
+$("roleDetails").innerHTML=details;$("passCover").style.display="flex";$("passRole").style.display="none";applyLanguage();
 }
 
 window.revealRole=function(){
@@ -658,13 +784,15 @@ startGame();
 }
 };
 
+function startGameTextOnly(){const s=contentScene();$("gameScene").textContent=s.title;$("gamePrompt").textContent=s.prompt;$("eventText").textContent=txt("game.empty");}
+
 function startGame(){
-const s=scenes.find(function(x){return x.id===state.scene});
+const s=contentScene();
 $("gameScene").textContent=s.title;
 $("gamePrompt").textContent=s.prompt;
 state.time=state.duration;
 state.usedEvents=[];
-$("eventText").textContent="Пока ничего не произошло.";
+$("eventText").textContent=txt("game.empty");
 $("eventText").className="event-empty";
 updateTimer();show("game");stopTimer();
 state.timer=setInterval(function(){
@@ -689,7 +817,7 @@ let available=sceneEvents.filter(function(e){return !state.usedEvents.includes(e
 if(!available.length){state.usedEvents=[];available=sceneEvents.slice()}
 const text=available[Math.floor(Math.random()*available.length)];
 state.usedEvents.push(text);
-$("eventText").textContent=text;
+$("eventText").textContent=contentEvent(state.scene,text);
 $("eventText").className="event-text";
 $("eventBox").classList.remove("pop");
 void $("eventBox").offsetWidth;
@@ -702,7 +830,7 @@ function buildVoting(){
 state.vote=null;$("voteConfirm").disabled=true;
 let html="";
 for(let i=0;i<state.players;i++){
-html+='<button class="vote-btn" id="vote-'+i+'" onclick="selectVote('+i+')"><span>Игрок '+(i+1)+'</span><span>○</span></button>';
+html+='<button class="vote-btn" id="vote-'+i+'" onclick="selectVote('+i+')"><span>'+(language==='en'?"Player ":"Игрок ")+(i+1)+'</span><span>○</span></button>';
 }
 $("voteList").innerHTML=html;
 }
@@ -727,7 +855,7 @@ show("results");
 };
 
 window.quitGame=function(){
-if(confirm("Закончить текущую сцену?")){stopTimer();show("home")}
+if(confirm(language==='en'?"End the current scene?":"Закончить текущую сцену?")){stopTimer();show("home")}
 };
 
 window.addEventListener("error",function(e){
@@ -735,6 +863,9 @@ const box=$("error");box.textContent="Ошибка приложения: "+(e.me
 });
 
 renderChoices();
+updateCredits();
+applyLanguage();
+syncNav(currentScreen);
 $("playerCount").textContent=state.players;
 })();
 </script>
