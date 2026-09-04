@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>СЦЕНА — MVP</title>
+<style>
+:root{--bg:#050506;--card:#111216;--card2:#17181d;--line:#292b33;--text:#f7f7f8;--muted:#9296a2;--purple:#713cff;--purple2:#8a5cff;--green:#76e34d;--yellow:#ffd52f;--red:#ff5252}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;min-height:100vh}.app{width:min(100%,720px);margin:auto;padding:20px 16px 38px}.screen{min-height:calc(100vh - 58px);display:flex;flex-direction:column}.top{display:flex;align-items:center;gap:12px;padding:8px 0 18px}.back{width:40px;height:40px;border:1px solid var(--line);background:#101116;color:#fff;border-radius:12px;font-size:25px;cursor:pointer}.brand{font-size:27px;font-weight:900;letter-spacing:-1px}.spacer{flex:1}.eyebrow{font-size:12px;color:#a9adba;font-weight:800;letter-spacing:1.3px;text-transform:uppercase}.hero{padding:34px 0 22px}.hero h1{font-size:58px;line-height:.9;margin:0 0 12px;font-weight:950;letter-spacing:-3px}.hero p{font-size:17px;color:#a5a9b4;max-width:460px;line-height:1.45}.panel{background:linear-gradient(145deg,#15161b,#0e0f13);border:1px solid var(--line);border-radius:22px;padding:20px;margin-top:14px}.panel h2{font-size:21px;margin:0 0 15px}.field{margin:16px 0}.field label{display:block;font-weight:800;font-size:14px;margin-bottom:8px}.select,.input{width:100%;background:#0b0c10;color:#fff;border:1px solid #343741;border-radius:13px;padding:14px;font-size:16px;outline:none}.btn{width:100%;border:0;border-radius:15px;padding:16px 18px;margin-top:10px;background:linear-gradient(90deg,#6330e9,#7e49ff);color:#fff;font-size:16px;font-weight:900;cursor:pointer}.btn:active{transform:scale(.99)}.btn.secondary{background:#191b21;border:1px solid #2c2f39}.btn.danger{background:#3a171b;border:1px solid #67272e}.btn:disabled{opacity:.45}.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.choice{background:#111217;border:1px solid #292c34;border-radius:14px;padding:14px 8px;text-align:center;cursor:pointer;font-weight:900}.choice.active{border-color:var(--purple2);box-shadow:0 0 0 1px var(--purple2) inset;background:#181329}.choice small{display:block;color:#a4a8b4;font-weight:500;margin-top:5px}.note{color:var(--muted);font-size:13px;line-height:1.45}.players{display:flex;flex-direction:column;gap:8px}.player{display:flex;align-items:center;gap:12px;padding:12px;background:#101116;border:1px solid #22252c;border-radius:13px}.num{width:31px;height:31px;border-radius:50%;display:grid;place-items:center;background:#733cff;font-weight:900}.status{margin-left:auto;color:var(--green);font-size:13px;font-weight:800}.cardrole{border:1px solid var(--purple2);background:#101117;border-radius:18px;padding:20px}.roleicon{font-size:40px}.rolename{font-size:30px;font-weight:950;margin:6px 0 18px}.goal{padding:14px 0;border-top:1px solid #292c34}.goal b{display:block;font-size:12px;color:#aeb2bd;letter-spacing:.7px;margin-bottom:5px}.goal span{font-size:16px;line-height:1.4}.timer{text-align:center;font-size:62px;font-weight:950;letter-spacing:-2px;margin:8px 0}.progress{height:8px;background:#202229;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,#6935ec,#9b72ff);width:0}.event{margin-top:18px;padding:24px;border:1px solid #5c4b16;background:#17150c;border-radius:18px;text-align:center}.event strong{color:var(--yellow);font-size:20px}.event div{font-size:17px;font-weight:800;line-height:1.4;margin-top:10px}.votegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.vote{background:#17191f;border:1px solid #2d3039;border-radius:15px;padding:18px;cursor:pointer;text-align:left;color:#fff}.vote b{display:block;font-size:18px}.vote small{color:#999eaa}.vote.selected{border-color:var(--purple2);background:#1a1530}.scoreline{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid #292c34}.total{font-size:40px;font-weight:950;text-align:center;padding:20px}.footer{margin-top:auto;padding-top:18px;color:#686d78;font-size:12px;text-align:center}.hidden{display:none!important}@media(max-width:480px){.hero h1{font-size:52px}.choices{grid-template-columns:1fr}.votegrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main class="app" id="app"></main>
+<script>
+const DB={
+"Продуктовый магазин":{
+desc:"Обычный магазин. Каждый пришёл сюда со своей скрытой целью.",
+roles:[
+["🛒","Покупатель","Вернуть товар без чека и получить деньги.","Заставь продавца самому предложить решение.","Постоянно оправдывайся.","Добейся фразы «Ладно, давай разберёмся».","Сделай так, чтобы другой игрок тебе поверил."],
+["👨‍💼","Продавец","Не возвращать деньги без чека.","Узнай настоящую причину возврата.","Будь максимально вежливым.","Добейся обещания прийти завтра.","Заставь покупателя назвать точную цену товара."],
+["👮","Охранник","Убедить всех, что покупатель что-то скрывает.","Заставь покупателя объяснить, что у него в карманах.","Подозревай абсолютно всех.","Заставь продавца позвонить управляющему.","Поймай кого-нибудь на противоречии."],
+["😈","Мелкий","Добиться, чтобы тебе продали товар, который тебе нельзя продавать.","Отвлеки охранника минимум на минуту.","Придумывай правдоподобные истории.","Заставь другого игрока помочь тебе.","Не называй товар прямо."]
+],events:["Отключили свет на 20 секунд.","Приехал управляющий.","Кто-то потерял кошелёк.","Началась внезапная проверка.","Сработала тревожная сигнализация."]
+},
+"Аэропорт":{
+desc:"Зал вылета. До посадки мало времени, а у каждого свои планы.",
+roles:[
+["✈️","Пассажир","Попасть на рейс несмотря на проблему с документами.","Убедить сотрудника сделать исключение.","Делай вид, что абсолютно спокоен.","Заставь кого-то подтвердить твою историю.","Узнай, куда летит другой игрок."],
+["🧑‍✈️","Сотрудник","Не пропустить пассажира без нужного документа.","Выясни, почему он так отчаянно пытается пройти.","Говори официальным тоном.","Попроси назвать номер рейса три раза.","Добейся, чтобы кто-нибудь показал билет."],
+["🏃","Опаздывающий","Добиться, чтобы кто-то задержал отправление.","Не раскрывай, что специально ищешь помощь.","Постоянно смотри на часы.","Заставь другого игрока бежать вместе с тобой.","Добейся, чтобы кто-то занервничал."],
+["🕵️","Подозрительный","Понять, кто здесь сотрудник аэропорта.","Сделай так, чтобы подозрение пало на другого.","Отвечай на вопросы вопросами.","Добейся, чтобы кто-то тебя защищал.","Заставь двух игроков поспорить."]
+],events:["Рейс задержан.","Началась усиленная проверка документов.","Погасло табло.","Сотрудник получил срочное сообщение.","До посадки осталось 2 минуты."]
+},
+"Собеседование":{
+desc:"Собеседование, где один человек явно знает больше остальных.",
+roles:[
+["💼","Кандидат","Получить работу.","Узнай главный недостаток другого кандидата.","Будь чрезмерно уверенным.","Заставь интервьюера задать неожиданный вопрос.","Продай интервьюеру бесполезную вещь."],
+["🧑‍💼","Интервьюер","Выбрать лучшего кандидата.","Выведи одного человека из равновесия.","Не улыбайся без причины.","Задай странный вопрос.","Заставь кандидата похвалить тебя."],
+["😎","Конкурент","Сделать так, чтобы выбрали тебя.","Незаметно поставь под сомнение чужую историю.","Будь дружелюбным.","Получи комплимент.","Сделай вид, что поддерживаешь соперника."],
+["🤨","Случайный человек","Убедить всех, что ты действительно должен быть здесь.","Не дай понять, что ты не кандидат.","Отвечай максимально уверенно.","Заставь интервьюера назвать твоё имя.","Придумай себе должность."]
+],events:["Пришёл директор.","Вакансия неожиданно изменилась.","Пропало резюме.","Собеседование продлили ещё на 2 минуты.","Появился новый начальник."]
+}};
+let S={page:"home",n:4,sit:"Продуктовый магазин",diff:"Средняя",duration:7,roles:[],i:0,time:420,event:null,eventIndex:-1,scores:[],votes:[]};
+
+function app(x){document.getElementById("app").innerHTML=x}
+function top(title,back=true){return `<div class=top>${back?`<button class=back onclick="home()">‹</button>`:`<div style="width:40px"></div>`}<div class=brand>${title}</div><div class=spacer></div></div>`}
+function home(){
+S.page="home";app(`<section class=screen>${top("СЦЕНА",false)}<div class=hero><div class=eyebrow>социальная импровизация</div><h1>СЦЕНА</h1><p>Секретные цели. Общая ситуация. Импровизация. Никто не знает, что происходит у остальных.</p></div><button class=btn onclick="setup()">Создать игру</button><button class="btn secondary" onclick="joinDemo()">Присоединиться</button><div class=panel><h2>Как это работает</h2><p class=note>Телефон передаётся по кругу. Каждый получает секретную роль и цель. Затем начинается сцена: договаривайтесь, убеждайте, врите и выкручивайтесь.</p></div><div class=footer>МVP • версия 0.1</div></section>`)
+}
+function setup(){
+S.page="setup";app(`<section class=screen>${top("Создание игры")}<div class=panel><div class=field><label>Количество игроков</label><select class=select id=n>${[3,4,5,6,7,8].map(x=>`<option ${x==S.n?"selected":""}>${x}</option>`).join("")}</select></div><div class=field><label>Ситуация</label><select class=select id=s>${Object.keys(DB).map(x=>`<option ${x==S.sit?"selected":""}>${x}</option>`).join("")}</select></div><div class=field><label>Сложность</label><div class=choices>${["Лёгкая","Средняя","Хардкор"].map((x,i)=>`<div class="choice ${x==S.diff?"active":""}" onclick="pickDiff('${x}',this)">${["🟢","🟡","🔴"][i]}<br>${x}<small>${i==0?"разогрев":i==1?"баланс":"хаос"}</small></div>`).join("")}</div></div><div class=field><label>Длительность</label><div class=choices>${[5,7,10].map(x=>`<div class="choice ${x==S.duration?"active":""}" onclick="pickDuration(${x},this)">${x} мин</div>`).join("")}</div></div><button class=btn onclick="create()">Создать игру</button></div></section>`)
+}
+function pickDiff(x,e){S.diff=x;document.querySelectorAll(".choice").forEach(a=>{if(["Лёгкая","Средняя","Хардкор"].includes(a.textContent.trim().split("\n")[1]))a.classList.remove("active")});e.classList.add("active")}
+function pickDuration(x,e){S.duration=x;document.querySelectorAll(".choice").forEach(a=>{if(a.textContent.includes("мин"))a.classList.remove("active")});e.classList.add("active")}
+function create(){
+S.n=+document.getElementById("n").value;S.sit=document.getElementById("s").value;S.roles=Array.from({length:S.n},(_,i)=>DB[S.sit].roles[i%4]);S.scores=Array(S.n).fill(0);S.votes=[];S.i=0;S.page="pass";pass()
+}
+function pass(){
+if(S.i>=S.n){startGame();return}
+app(`<section class=screen>${top("СЦЕНА")}<div class=hero><div class=eyebrow>подготовка</div><h1 style="font-size:44px">Игрок ${S.i+1}</h1><p>Передай телефон игроку ${S.i+1}. Остальные отвернитесь от экрана.</p></div><div class=panel><div class=goal><b>Код игры</b><span>SCENA-${Math.random().toString(36).slice(2,7).toUpperCase()}</span></div><button class=btn onclick="roleCard()">Показать мою карточку</button></div><div class=footer>Не показывай свою карточку другим игрокам.</div></section>`)
+}
+function roleCard(){
+let r=S.roles[S.i];app(`<section class=screen>${top("Ваша карточка",false)}<div class=cardrole><div class=eyebrow>секретно</div><div class=roleicon>${r[0]}</div><div class=rolename>${r[1]}</div><div class=goal><b>ГЛАВНАЯ ЦЕЛЬ</b><span>${r[2]}</span></div><div class=goal><b>СЕКРЕТНАЯ ЦЕЛЬ</b><span>${r[3]}</span></div><div class=goal><b>ХАРАКТЕР / ОГРАНИЧЕНИЕ</b><span>${r[4]}</span></div><div class=goal><b>БОНУС +1</b><span>${r[5]}</span></div><div class=goal><b>ДОПОЛНИТЕЛЬНОЕ УСЛОВИЕ</b><span>${r[6]}</span></div></div><button class=btn onclick="nextPlayer()">Понял, передаю телефон →</button></section>`)
+}
+function nextPlayer(){S.i++;pass()}
+let timerId=null;
+function startGame(){S.page="game";S.time=S.duration*60;S.event=null;S.eventIndex=-1;renderGame();clearInterval(timerId);timerId=setInterval(()=>{S.time--;let t=document.getElementById("timer");let p=document.getElementById("progress");if(t)t.textContent=fmt(S.time);if(p)p.style.width=(100-S.time/(S.duration*60)*100)+"%";if(S.time<=0)finish()},1000)}
+function fmt(t){return String(Math.floor(t/60)).padStart(2,"0")+":"+String(t%60).padStart(2,"0")}
+function renderGame(){app(`<section class=screen>${top("Игра идёт",false)}<div class=timer id=timer>${fmt(S.time)}</div><div class=progress><i id=progress></i></div><div class=panel><div class=eyebrow>${S.sit}</div><h2>Отрпиграйте ситуацию</h2><p class=note>${DB[S.sit].desc}</p>${S.event?`<div class=event><strong>🚨 СОБЫТИЕ!</strong><div>${S.event}</div></div>`:`<div class=goal><b>💡 ПОДСКАЗКА</b><span>Слушай других и вплетай свою цель в общий разговор. Не пытайся выполнить её слишком очевидно.</span></div>`}</div><button class="btn secondary" onclick="eventNow()">🚨 Случайное событие</button><button class="btn danger" onclick="finish()">Закончить раунд</button><div class=footer>Раунд ${S.eventIndex<0?1:S.eventIndex+2} • таймер идёт</div></section>`)}
+function eventNow(){let ev=DB[S.sit].events;let x;do{x=Math.floor(Math.random()*ev.length)}while(ev.length>1&&x===S.eventIndex);S.eventIndex=x;S.event=ev[x];renderGame()}
+function finish(){clearInterval(timerId);S.page="vote";S.votes=[];vote()}
+function vote(){app(`<section class=screen>${top("Голосование",false)}<div class=hero><div class=eyebrow>раунд завершён</div><h1 style="font-size:44px">Кто был лучшим?</h1><p>Каждый игрок выбирает одного человека: самый убедительный, смешной или хитрый.</p></div><div class=votegrid>${Array.from({length:S.n},(_,i)=>`<button class=vote onclick="cast(${i},this)"><b>Игрок ${i+1}</b><small>Отдать голос</small></button>`).join("")}</div><button id=voteDone class=btn disabled onclick="results()">Показать результаты</button></section>`)}
+function cast(i,e){S.votes.push(i);S.scores[i]++;e.classList.add("selected");e.disabled=true;if(S.votes.length>=S.n){document.getElementById("voteDone").disabled=false;document.getElementById("voteDone").textContent="🏆 Показать результаты"}}
+function results(){S.page="result";let ord=S.scores.map((x,i)=>({x,i})).sort((a,b)=>b.x-a.x);let rows=ord.map((o,k)=>`<div class=scoreline><span>${k===0?"🏆 ":""}Игрок ${o.i+1}</span><b>${o.x} ${o.x==1?"очко":"очков"}</b></div>`).join("");app(`<section class=screen>${top("Результаты",false)}<div class=hero style="text-align:center"><div class=eyebrow>готово</div><h1 style="font-size:44px">🏆 Раунд!</h1><p>Вот как распределились голоса.</p></div><div class=panel>${rows}</div><div class=total>${Math.max(...S.scores)} <span style="font-size:20px;color:#aaa">очк.</span></div><button class=btn onclick="setup()">Следующий раунд</button><button class="btn secondary" onclick="home()">В главное меню</button></section>`)}
+function joinDemo(){alert("Демо режима подключения: в полной версии здесь будет код комнаты. Сейчас нажми «Создать игру» и попробуй игру на одном телефоне.")}
+function render(){if(S.page==="home")home();else if(S.page==="setup")setup();else if(S.page==="pass")pass();else if(S.page==="game")renderGame();else if(S.page==="vote")vote();else results()}
+home();
+</script></body></html>
