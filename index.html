@@ -339,7 +339,7 @@ body:before{
 .pass-role-card .secret-row{padding:9px 0;}
 .pass-role-card .label{font-size:10px;letter-spacing:.8px;margin-bottom:4px;}
 .pass-role-card .secret-value{font-size:15px;line-height:1.3;}
-.pass-role-card #passWarning{font-size:11px;line-height:1.3;margin:10px 0 0;max-width:560px;color:#858590;}
+.pass-role-card #passWarning{display:none !important;}
 #passHide{width:min(100%,620px);margin-top:8px;min-height:44px;font-size:14px;}
 @media(max-width:520px){
   .pass-stage-compact{padding-top:30px;}
@@ -353,7 +353,7 @@ body:before{
   .pass-role-card .secret-row{padding:7px 0;}
   .pass-role-card .label{font-size:9.5px;margin-bottom:3px;}
   .pass-role-card .secret-value{font-size:13.5px;line-height:1.25;}
-  .pass-role-card #passWarning{font-size:10px;margin-top:7px;}
+  .pass-role-card #passWarning{display:none !important;}
   #passHide{margin-top:7px;min-height:43px;}
 }
 /* v15: expanded role card, no extra subtitle */
@@ -367,8 +367,8 @@ body:before{
 .pass-role-inner .role-name{font-size:29px;margin-bottom:13px;}
 .pass-role-card .secret-row{padding:10px 0;}
 .pass-role-card .label{font-size:10.5px;margin-bottom:5px;}
-.pass-role-card .secret-value{font-size:16px;line-height:1.32;}
-.pass-role-card #passWarning{font-size:11.5px;line-height:1.32;margin-top:11px;}
+.pass-role-card .secret-value{font-size:16px;line-height:1.27;}
+.pass-role-card #passWarning{display:none !important;}
 #passHide{margin-top:9px;min-height:46px;}
 @media(max-width:520px){
  .pass-stage-compact{padding-top:22px;}
@@ -378,9 +378,10 @@ body:before{
  .pass-role-inner .role-icon{font-size:38px;}
  .pass-role-inner .role-name{font-size:27px;margin-bottom:10px;}
  .pass-role-card .secret-row{padding:8px 0;}
+  .pass-role-card #roleDetails{gap:9px;}
  .pass-role-card .label{font-size:10px;margin-bottom:4px;}
- .pass-role-card .secret-value{font-size:15px;line-height:1.28;}
- .pass-role-card #passWarning{font-size:10.5px;margin-top:8px;}
+ .pass-role-card .secret-value{font-size:15px;line-height:1.26;}
+ .pass-role-card #passWarning{display:none !important;}
  #passHide{margin-top:7px;min-height:44px;}
 }
 </style>
@@ -390,7 +391,8 @@ body:before{
 .pass-role-card{
   height:100%;
   max-height:none;
-  overflow:hidden;
+  overflow-x:hidden;
+  overflow-y:auto;
   box-sizing:border-box;
   padding:clamp(20px,3vh,30px) clamp(24px,4vw,34px) clamp(18px,2.5vh,24px);
   display:flex;
@@ -425,20 +427,22 @@ body:before{
   letter-spacing:-.7px;
 }
 .pass-role-card #roleDetails{
-  flex:1 1 auto;
+  flex:0 0 auto;
   min-height:0;
   width:100%;
   display:flex;
   flex-direction:column;
-  justify-content:space-evenly;
+  justify-content:flex-start;
+  gap:clamp(10px,1.5vh,14px);
+  overflow:visible;
 }
 .pass-role-card .secret-row{
-  flex:1 1 0;
+  flex:0 0 auto;
   min-height:0;
-  padding:clamp(9px,1.5vh,15px) 0;
+  padding:clamp(9px,1.5vh,13px) 0;
   display:flex;
   flex-direction:column;
-  justify-content:center;
+  justify-content:flex-start;
   border-top:1px solid #30283d;
 }
 .pass-role-card .label{
@@ -449,9 +453,15 @@ body:before{
 }
 .pass-role-card .secret-value{
   font-size:clamp(16px,2vw,18px);
-  line-height:1.38;
-  letter-spacing:-.1px;
+  line-height:1.42;
+  letter-spacing:0;
+  word-spacing:normal;
+  overflow-wrap:break-word;
+  word-break:normal;
+  hyphens:none;
 }
+.pass-role-card::-webkit-scrollbar{width:0;height:0;}
+.pass-role-card{scrollbar-width:none;}
 .pass-role-card #passWarning{
   flex:0 0 auto;
   font-size:clamp(10px,1.4vw,12px);
@@ -464,7 +474,8 @@ body:before{
   .pass-role-inner .role-icon{font-size:35px;margin-bottom:5px;}
   .pass-role-inner .role-name{font-size:29px;margin-bottom:10px;}
   .pass-role-card .secret-row{padding:8px 0;}
-  .pass-role-card .secret-value{font-size:16px;line-height:1.32;}
+  .pass-role-card #roleDetails{gap:9px;}
+  .pass-role-card .secret-value{font-size:16px;line-height:1.27;}
 }
 </style>
 <style>/* v31 */
@@ -608,14 +619,16 @@ roles:[
 ["📱","Блогер","Уйди из магазина с интересной историей.","Вовлеки минимум двух игроков в свою историю.","Делай вид, что всё происходит обычно.","Нельзя прямо говорить, что ты снимаешь материал."],
 ["🧑‍🔧","Мастер","Убедить всех, что проблему можно решить твоим способом.","Получи поддержку другого игрока.","Говори как эксперт.","Нельзя соглашаться с первым предложением."]
 ]},
-{id:"airport",title:"Аэропорт",icon:"✈️",prompt:"Рейс скоро закрывается, а у каждого участника своя проблема.",
+{id:"airport",title:"Аэропорт",icon:"✈️",prompt:"До вылета остаётся 10 минут. У выхода на посадку обнаружили чужой чемодан, который никто не признаёт своим. Пока сотрудники пытаются разобраться, у каждого свои дела и свои причины вмешиваться.",
 roles:[
-["🧳","Пассажир","До закрытия посадки добейся решения своей проблемы с рейсом.","Найди союзника.","Ты очень торопишься.","Нельзя просто уйти от разговора."],
-["👩‍✈️","Сотрудник аэропорта","Следи за правилами и не допускай хаоса.","Поймай кого-нибудь на противоречии.","Говори спокойно и официально.","Нельзя делать исключения без убедительной причины."],
-["🗺️","Турист","Узнай, к какому выходу тебе нужно идти и что делать дальше.","Узнай важную информацию у двух игроков.","Делай вид, что всё под контролем.","Нельзя признаться, что ты полностью потерялся."],
-["🎫","Уверенный пассажир","Добейся особого отношения.","Убеди кого-то заступиться за тебя.","Веди себя так, будто тебя здесь все знают.","Нельзя прямо объяснять, почему тебе должны помочь."],
-["📢","Представитель авиакомпании","Успокой ситуацию и добиться общего решения.","Заставь двух людей договориться.","Ты уверен, что знаешь решение.","Нельзя решать проблему только в пользу одного человека."],
-["🧑‍✈️","Член экипажа","Собери нужную информацию перед посадкой.","Выведай у кого-нибудь важную деталь.","Будь максимально собранным.","Нельзя первым раскрывать, что именно тебе нужно."]
+["🧳","Опаздывающий пассажир","Добейся, чтобы тебе позволили пройти на посадку несмотря на возникшую ситуацию.","Заставь другого игрока помочь тебе решить проблему с чемоданом.","Ты постоянно торопишь всех и легко раздражаешься.","Нельзя просто бросить ситуацию и уйти."],
+["👨‍💼","Сотрудник аэропорта","Выясни, кому принадлежит оставленный чемодан, и реши, что с ним делать до начала посадки.","Добейся, чтобы кто-нибудь рассказал тебе, что видел перед появлением чемодана.","Говори спокойно и официально, даже когда все начинают нервничать.","Нельзя просто забрать чемодан и уйти от проблемы."],
+["📱","Блогер","Преврати происходящее у выхода на посадку в интересную историю для своего контента.","Добейся, чтобы кто-нибудь из игроков начал спорить с сотрудником аэропорта.","Ты постоянно ищешь повод вмешаться и задаёшь слишком много вопросов.","Нельзя прямо говорить, что тебе нужен конфликт ради контента."],
+["🧹","Уборщица","Рассказать сотруднику аэропорта всё, что ты видела перед тем, как появился чемодан.","Убедить кого-нибудь, что именно он мог оставить чемодан.","Ты очень любопытная и любишь обсуждать чужие дела.","Нельзя сразу раскрыть всю информацию, которую ты знаешь."],
+["👮","Охранник","Не допустить, чтобы кто-нибудь забрал или открыл подозрительный чемодан до выяснения ситуации.","Определи, кто из игроков ведёт себя подозрительнее всех, и убедись, что за ним следят.","Ты относишься ко всему слишком серьёзно и подозрительно.","Нельзя позволять кому-либо унести чемодан без объяснения причины."],
+["🎸","Музыкант","Добейся разрешения сыграть короткое выступление прямо в зоне ожидания.","Вовлеки минимум двух игроков в своё импровизированное выступление.","Ты абсолютно уверен, что твоя музыка сейчас всем нужна.","Нельзя просто начать выступать без попытки договориться."],
+["📦","Курьер","Успей передать посылку нужному человеку до начала посадки.","Определи получателя, не спрашивая его имя напрямую.","Ты нервничаешь из-за времени и постоянно ищешь нужного человека.","Нельзя прямо спросить: «Вы получатель этой посылки?"],
+["👩‍✈️","Стюардесса","Собери пассажиров своего рейса и добейся, чтобы они вовремя подошли к выходу на посадку.","Убедись, что хотя бы один игрок точно понял, что может опоздать на посадку.","Ты стараешься сохранять профессиональное спокойствие, но времени всё меньше.","Нельзя просто назвать всех пассажиров по именам и разогнать их." ]
 ]},
 {id:"interview",title:"Собеседование",icon:"💼",prompt:"Компания ищет нового сотрудника, но у участников совсем разные интересы.",
 roles:[
@@ -689,7 +702,7 @@ const durations=[
 
 const events={
 store:["Внезапно приходит новый покупатель с очень странной просьбой.","Кассир сообщает, что система временно не работает.","Один из товаров внезапно становится главным предметом спора.","В магазине объявляют проверку."],
-airport:["Объявляют изменение выхода на посадку.","Сотрудник просит всех освободить проход.","Рейс откладывается ещё на несколько минут.","Кто-то утверждает, что владеет важной информацией о вылете."],
+airport:["Объявляют новый выход на посадку — теперь нужно срочно понять, кто должен туда идти.","Охрана просит всех отойти от оставленного чемодана.","До закрытия посадки остаётся 5 минут.","Кто-то заявляет, что знает, кому принадлежит чемодан.","Сотрудник просит человека, который видел появление чемодана, рассказать всё по порядку.","Посадка начинается раньше, чем ожидалось.","Курьеру срочно нужно найти получателя посылки.","Стюардесса просит всех пассажиров её рейса пройти к выходу."],
 interview:["Встреча внезапно сокращается до одной минуты.","Руководитель просит кандидатов договориться между собой.","Появляется новая вакансия, о которой никто не знал.","Рекрутер объявляет: следующий вопрос будет решающим."],
 restaurant:["Кухня сообщает, что одно блюдо временно недоступно.","За соседним столом начинается спор.","Администратор просит решить ситуацию без конфликтов.","Официант приносит неожиданную информацию."],
 hotel:["Один номер внезапно становится недоступен.","Администратор просит гостей быстро договориться.","Появляется новая информация о бронировании.","На ресепшене становится слишком много людей."],
@@ -701,7 +714,7 @@ wedding:["Ведущий объявляет незапланированную �
 
 const eventsEN={
 store:["A new customer suddenly arrives with a very strange request.","The cashier says the system is temporarily down.","One product suddenly becomes the main subject of an argument.","An inspection is announced in the store."],
-airport:["The boarding gate is suddenly changed.","A staff member asks everyone to clear the passage.","The flight is delayed for a few more minutes.","Someone claims to have important information about the departure."],
+airport:["The boarding gate is changed — everyone must quickly figure out who needs to go there.","Security asks everyone to move away from the unattended suitcase.","There are only 5 minutes left before boarding closes.","Someone claims to know who the suitcase belongs to.","The employee asks the person who saw the suitcase appear to tell the whole story.","Boarding starts earlier than expected.","The courier urgently needs to find the package recipient.","The flight attendant asks all passengers for the flight to go to the gate."],
 interview:["The meeting is suddenly cut down to one minute.","The manager asks the candidates to reach an agreement.","A new position appears that nobody knew about.","The recruiter announces: the next question will decide everything."],
 restaurant:["The kitchen says one dish is temporarily unavailable.","An argument starts at the next table.","The manager asks everyone to solve the situation without conflict.","The waiter brings unexpected information."],
 hotel:["One room suddenly becomes unavailable.","The receptionist asks the guests to reach an agreement quickly.","New information about the booking appears.","The reception area suddenly gets crowded."],
@@ -720,12 +733,15 @@ store:{title:"Store",prompt:"An ordinary store. Everyone has a hidden reason for
 ["📦","Warehouse Worker","Find out where the missing item went.","Get someone to admit they handled the item.","You are always in a hurry.","You cannot accuse anyone directly."],
 ["🧾","Cashier","Keep the line moving and avoid a conflict.","Make two people agree on one solution.","You are extremely practical.","You cannot leave your place."],
 ["👀","Regular Customer","Figure out what is really going on.","Convince someone to tell you an important detail.","Act as if you have seen everything before.","You cannot reveal why you are interested."]]},
-airport:{title:"Airport",prompt:"A flight is about to depart, but everyone has a different problem to solve.",roles:[
-["🧳","Passenger","Solve your flight problem before boarding closes.","Get another player to help you first.","You are worried about being late.","You cannot ask anyone directly to help you."],
-["🛂","Security Officer","Keep the area calm and organized.","Find out who is hiding important information.","Be strict but professional.","You cannot raise your voice."],
-["🎫","Traveler","Find your way to the correct gate.","Get two different people to confirm the route.","You are convinced you know the airport better than everyone.","You cannot admit that you are lost."],
-["📢","Airport Employee","Help everyone understand what is happening.","Make two people agree on a plan.","You are calm under pressure.","You cannot make up information."],
-["🧑‍✈️","Crew Member","Collect the information you need before boarding.","Get an important detail from someone.","Stay completely focused.","You cannot reveal what information you need first."]]},
+airport:{title:"Airport",prompt:"There are 10 minutes left before departure. An unattended suitcase has been found at the gate, and nobody admits it is theirs. While airport staff try to solve the problem, everyone has their own business and reasons to get involved.",roles:[
+["🧳","Late Passenger","Get permission to board despite the situation unfolding around the suitcase.","Get another player to help you solve the suitcase situation.","You are constantly rushing everyone and get irritated easily.","You cannot simply abandon the situation and leave."],
+["👨‍💼","Airport Employee","Find out who the unattended suitcase belongs to and decide what to do with it before boarding begins.","Get someone to tell you what they saw before the suitcase appeared.","Speak calmly and officially even when everyone gets nervous.","You cannot simply take the suitcase away and ignore the problem."],
+["📱","Blogger","Turn what is happening at the gate into an interesting story for your content.","Get at least one player to start arguing with the airport employee.","You are always looking for a reason to interfere and ask too many questions.","You cannot openly say that you want conflict for content."],
+["🧹","Cleaner","Tell the airport employee everything you saw before the suitcase appeared.","Convince someone that they might have left the suitcase.","You are very curious and love discussing other people's business.","You cannot reveal all the information you know at once."],
+["👮","Security Guard","Do not let anyone take or open the suspicious suitcase until the situation is clear.","Decide who is acting most suspiciously and make sure they are watched.","You take everything far too seriously and suspiciously.","You cannot let anyone take the suitcase without an explanation."],
+["🎸","Musician","Get permission to play a short performance in the waiting area.","Involve at least two players in your improvised performance.","You are absolutely convinced everyone needs your music right now.","You cannot simply start performing without trying to get permission."],
+["📦","Courier","Deliver your package to the correct person before boarding begins.","Identify the recipient without asking for their name directly.","You are stressed about the time and keep searching for the right person.","You cannot directly ask, 'Are you the recipient of this package?'"],
+["👩‍✈️","Flight Attendant","Gather the passengers for your flight and get them to the gate on time.","Make sure at least one player realizes they could miss boarding.","You stay professionally calm, but time is running out.","You cannot simply name all the passengers and order them around."]]},
 interview:{title:"Job Interview",prompt:"A company is hiring, but everyone involved has different interests.",roles:[
 ["👔","Candidate","Convince the employer that you should be hired.","Hide one obvious weakness.","Answer confidently even when the question is uncomfortable.","You cannot directly say you are better than the others."],
 ["🧑‍💼","Recruiter","Choose the candidate who fits the company.","Expose at least one candidate's weakness.","Do not show who you prefer right away.","You cannot ask the same question twice."],
@@ -771,7 +787,7 @@ wedding:{title:"Party",prompt:"A big celebration is not going according to plan,
 };
 
 
-const sceneGuides={ru:{store:"Вы в обычном магазине. Покупатели и сотрудники оказались рядом, и у каждого есть своя причина вмешаться в происходящее. Сцена строится вокруг общения и попыток решить возникшую проблему.",airport:"Вы в аэропорту перед вылетом. Рейс скоро закрывается, вокруг много людей, а из-за разных проблем и спешки ситуация постепенно становится напряжённее.",interview:"Вы на собеседовании. Компания пытается понять, кто подходит ей, а участники одновременно пытаются добиться своего и повлиять на решение остальных.",restaurant:"Вы в ресторане за одним столом. Возникла проблема с заказом или обслуживанием, и гостям и сотрудникам нужно разобраться в ней прямо во время разговора.",hotel:"Вы на ресепшене отеля. Заселение пошло не совсем по плану, свободных вариантов немного, поэтому игрокам приходится договариваться и искать решение.",school:"Вы в школе после неожиданной ситуации. Несколько человек знают разные части истории, и теперь нужно понять, что произошло, не потеряв контроль над разговором.",office:"Вы в офисе прямо перед важным дедлайном. Обнаружилась проблема, которую нужно решить, пока участники пытаются понять причины и распределить ответственность.",train:"Вы в поезде, который задержался или изменил обычный ход поездки. Пассажиры и сотрудники пытаются разобраться, что происходит и что делать дальше.",wedding:"Вы на большом празднике. Что-то идёт не по плану, но участники стараются сохранить нормальную атмосферу и одновременно решить возникшую проблему."},en:{store:"You are in an ordinary store. Customers and employees are nearby, and everyone has their own reason to get involved. The scene is about communication and solving the problem that appears.",airport:"You are at an airport before departure. The flight is about to close, people are in a hurry, and different problems are making the situation more tense.",interview:"You are at a job interview. The company is trying to understand who fits, while everyone involved is also trying to influence the final decision.",restaurant:"You are at a restaurant table. A problem with the order or service has appeared, and guests and staff have to deal with it during the conversation.",hotel:"You are at a hotel reception. Check-in has not gone as planned and there are only a few options left, so the players have to negotiate and find a solution.",school:"You are at school after an unexpected incident. Several people know different parts of the story, and now everyone is trying to understand what happened without losing control of the conversation.",office:"You are in an office just before an important deadline. A problem has appeared, and the players need to solve it while figuring out what happened and who will handle it.",train:"You are on a train that has been delayed or changed its normal route. Passengers and staff are trying to understand what is happening and what to do next.",wedding:"You are at a big celebration. Something is not going according to plan, but everyone is trying to keep the mood normal while solving the problem."}};
+const sceneGuides={ru:{store:"Вы в обычном магазине. Покупатели и сотрудники оказались рядом, и у каждого есть своя причина вмешаться в происходящее. Сцена строится вокруг общения и попыток решить возникшую проблему.",airport:"Вы в аэропорту перед вылетом. До посадки 10 минут, а у выхода обнаружили чужой чемодан. Сотрудники пытаются разобраться, но вокруг уже начинается суета: кто-то опаздывает, кто-то что-то видел, а кто-то вообще пришёл сюда по своим делам.",interview:"Вы на собеседовании. Компания пытается понять, кто подходит ей, а участники одновременно пытаются добиться своего и повлиять на решение остальных.",restaurant:"Вы в ресторане за одним столом. Возникла проблема с заказом или обслуживанием, и гостям и сотрудникам нужно разобраться в ней прямо во время разговора.",hotel:"Вы на ресепшене отеля. Заселение пошло не совсем по плану, свободных вариантов немного, поэтому игрокам приходится договариваться и искать решение.",school:"Вы в школе после неожиданной ситуации. Несколько человек знают разные части истории, и теперь нужно понять, что произошло, не потеряв контроль над разговором.",office:"Вы в офисе прямо перед важным дедлайном. Обнаружилась проблема, которую нужно решить, пока участники пытаются понять причины и распределить ответственность.",train:"Вы в поезде, который задержался или изменил обычный ход поездки. Пассажиры и сотрудники пытаются разобраться, что происходит и что делать дальше.",wedding:"Вы на большом празднике. Что-то идёт не по плану, но участники стараются сохранить нормальную атмосферу и одновременно решить возникшую проблему."},en:{store:"You are in an ordinary store. Customers and employees are nearby, and everyone has their own reason to get involved. The scene is about communication and solving the problem that appears.",airport:"You are at an airport before departure. There are 10 minutes left before boarding, and an unattended suitcase has been found at the gate. Staff are trying to solve it while the terminal gets more chaotic: someone is late, someone saw something, and others have their own reasons to get involved.",interview:"You are at a job interview. The company is trying to understand who fits, while everyone involved is also trying to influence the final decision.",restaurant:"You are at a restaurant table. A problem with the order or service has appeared, and guests and staff have to deal with it during the conversation.",hotel:"You are at a hotel reception. Check-in has not gone as planned and there are only a few options left, so the players have to negotiate and find a solution.",school:"You are at school after an unexpected incident. Several people know different parts of the story, and now everyone is trying to understand what happened without losing control of the conversation.",office:"You are in an office just before an important deadline. A problem has appeared, and the players need to solve it while figuring out what happened and who will handle it.",train:"You are on a train that has been delayed or changed its normal route. Passengers and staff are trying to understand what is happening and what to do next.",wedding:"You are at a big celebration. Something is not going according to plan, but everyone is trying to keep the mood normal while solving the problem."}};
 
 const state={players:4,scene:"store",difficulty:"normal",duration:180,pass:0,roles:[],playerNames:[],usedEvents:[],time:180,timer:null,vote:null,votePlayer:0,voteRatings:[],credits:Number(localStorage.getItem("scena_credits")||5),gamesPlayed:Number(localStorage.getItem("scena_games_played")||0)};
 
@@ -952,7 +968,13 @@ if(names.some(function(n){return !n})){alert(language==='en'?"Enter a name for e
 const normalized=names.map(function(n){return n.toLocaleLowerCase()});
 if(new Set(normalized).size!==names.length){alert(language==='en'?"Names must be unique.":"Имена должны быть уникальными.");return;}
 state.playerNames=names;
+// Если экран "Имена" ещё заканчивает анимацию перехода,
+// ждём её завершения, иначе show("pass") блокируется флагом navigating.
+if(navigating){
+setTimeout(function(){startPass();},420);
+}else{
 startPass();
+}
 };
 
 window.startPass=function(){
